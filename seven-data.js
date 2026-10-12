@@ -1,10 +1,10 @@
 'use strict';
 const PEOPLE = {
  player:{name:'我',hair:'#493f39',bio:'住在这里的房东，自己的房间在最右边。'},
- lin:{name:'林砚',hair:'#2e373b',bio:'大四法学生，说话有条理，希望生活有明确约定。'},
- su:{name:'苏白',hair:'#c5cfcb',bio:'大三视觉传达学生，话不多，喜欢安静，画画时常戴着耳机。'},
- chen:{name:'陈灿',hair:'#d28b77',bio:'大二播音学生，热情，爱拍视频，想起什么就想拉人一起做。'},
- xu:{name:'许川',hair:'#624a3b',bio:'做设计的朋友，借住沙发七天。说话客气，进门先问要不要换鞋。'}
+ lin:{name:'林砚',hair:'#2e373b',bio:'大四法学生，说话有条理，喜欢把约定说清楚。'},
+ su:{name:'苏白',hair:'#c5cfcb',bio:'大三视觉传达学生，话少，喜欢安静。'},
+ chen:{name:'陈灿',hair:'#d28b77',bio:'大二播音学生，热情，爱拍视频。'},
+ xu:{name:'许川',hair:'#624a3b',bio:'做设计的朋友，借住七天，怕给人添麻烦。'}
 };
 const ATMOSPHERES=['和睦','微妙','紧绷','对立'];
 const PACT=[
@@ -16,7 +16,7 @@ const PACT=[
 ];
 const CLUES={departure:{title:'许川的离职证明',text:'许川说上一份工作刚结束，证明还要留着办手续。',group:'许川的生活困境',detail:'目前只知道他离职了，最近过得怎么样，还没聊到。'}};
 // Only atmosphere is a relationship measure. Discovery flags never award points.
-const INITIAL=()=>({version:1,edition:'seven-day',day:1,phase:'explore',introStep:'guide',atmosphere:0,pact:'intact',signed:true,clues:[],visited:[],history:[],player:{x:624,y:368},npcs:null,elapsed:0});
+const INITIAL=()=>({version:2,actions:0,spoken:[],activeTarget:null,duskTime:0,edition:'seven-day',day:1,phase:'explore',introStep:'guide',atmosphere:0,pact:'intact',signed:true,clues:[],visited:[],history:[],player:{x:624,y:368},npcs:null,elapsed:0});
 const OBJECTS=[
  {id:'board',name:'公约板',x:656,y:336,hitX:672,hitY:304},
  {id:'sofa',name:'背包',x:464,y:452,hitX:468,hitY:411},
