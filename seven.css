@@ -1,0 +1,21 @@
+#finish-day{position:absolute;right:max(22px,env(safe-area-inset-right));bottom:106px;background:#fff2d9;color:#344c43;border:2px solid #b99267;box-shadow:0 3px 0 #263e3733}
+.talking #finish-day{visibility:hidden}
+.pact-paper{background:#f7ebcb;border:1px solid #c3b68e;padding:18px 24px;box-shadow:3px 4px 0 #a89a7133;max-width:540px}
+.pact-paper h2{text-align:center;font-family:'KaiTi','STKaiti',serif;font-size:30px}
+.pact-paper ol{padding-left:24px;margin:20px 0;line-height:1.9;font-size:16px}
+.pact-paper li{margin:9px 0}
+.signatures{border-top:1px dashed #b6a683;padding-top:14px;font-family:'KaiTi','STKaiti',serif;font-size:18px!important}
+.hint,dialog small{color:#757b67;font-size:12px;line-height:1.8}
+.notebook-clue{border-left:3px solid #bc9368;padding:4px 16px;margin:20px 0;background:#f1e8d1}
+dialog[open]{display:flex;flex-direction:column}#modal-body{min-height:0;overflow:auto}dialog details{margin:20px 0}dialog summary{cursor:pointer;min-height:44px;padding:10px 0}#modal-close{margin-top:16px;align-self:flex-start;flex-shrink:0}
+#quest{width:225px}#quest-tag{display:none}.day>span{letter-spacing:0;font-size:12px}
+@media(max-height:520px) and (orientation:landscape){
+ .day>span{display:block;font-size:11px}.day strong{font-size:13px}.tools button{min-width:44px;min-height:44px;font-size:12px}
+ #quest{top:70px;width:185px}#quest-detail{font-size:12px!important}#finish-day{bottom:87px;min-height:44px;padding:8px 14px}
+ .pact-paper{padding:8px 16px}.pact-paper ol{margin:10px 0;font-size:15px;line-height:1.6}.pact-paper li{margin:7px 0}
+ dialog{max-height:90dvh;max-width:min(720px,92vw)}#modal-close{position:static}
+ dialog h2{margin-bottom:8px}#modal-body>p{margin:8px 0}#modal-body>.hint{line-height:1.5;margin-bottom:0}
+ #people-list{display:grid;grid-template-columns:1fr 1fr;gap:5px 16px}.roster-row{margin:2px 0}.roster-row p{font-size:13px;line-height:1.5}
+ #modal-close.welcome-action{margin:14px auto 2px;min-height:44px;padding:9px 24px;font-size:17px}
+ .menu-actions button{min-height:44px}.menu .eyebrow{margin-top:0}.menu h1{margin:4px 0}.menu .subtitle{margin:8px 0}
+}
