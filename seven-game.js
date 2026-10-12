@@ -9,26 +9,29 @@ function valid(s){
  const line=l=>Array.isArray(l)&&l.length===2&&Object.hasOwn(PEOPLE,l[0])&&typeof l[1]==='string'&&l[1].length<1000;
  const objects=[...OBJECTS.map(o=>o.id),'dining'],people=['lin','su','chen','xu'];
  const list=(v,allowed)=>Array.isArray(v)&&new Set(v).size===v.length&&v.every(k=>allowed.includes(k));
- if(!s||s.version!==7||s.edition!=='seven-day'||!Number.isInteger(s.day)||s.day<1||s.day>5||!['explore','dusk','complete'].includes(s.phase))return false;
+ if(!s||s.version!==8||s.edition!=='seven-day'||!Number.isInteger(s.day)||s.day<1||s.day>7||!['explore','dusk','complete'].includes(s.phase))return false;
  if(!Number.isInteger(s.atmosphere)||s.atmosphere<0||s.atmosphere>3||!['intact','marked','scored','torn'].includes(s.pact)||s.signed!==true)return false;
- if(!s.flags||Array.isArray(s.flags)||Object.entries(s.flags).some(([k,v])=>!['suHint','empathy','visitorKnown','sharedDrinks','guestLeft','guestStays'].includes(k)||v!==true))return false;
- if(!s.choices||Array.isArray(s.choices)||Object.entries(s.choices).some(([d,id])=>!['2','3','5'].includes(d)||+d>s.day||!STORY_DAYS[d].choices[id]))return false;
- for(const d of [2,3,5])if(d<s.day&&!s.choices[d])return false;
- if(!['idle','intro','choice','response','done'].includes(s.eventStage)||typeof s.endRequested!=='boolean'||typeof s.bedRequested!=='boolean')return false;
+ if(!s.flags||Array.isArray(s.flags)||Object.entries(s.flags).some(([k,v])=>!['suHint','empathy','visitorKnown','sharedDrinks','guestLeft','guestStays','finaleRead'].includes(k)||v!==true))return false;
+ if(!s.choices||Array.isArray(s.choices)||Object.entries(s.choices).some(([d,id])=>!['2','3','5','6'].includes(d)||+d>s.day||!STORY_DAYS[d].choices[id]))return false;
+ for(const d of [2,3,5,6])if(d<s.day&&!s.choices[d])return false;
+ if(!['idle','intro','choice','response','done','finale'].includes(s.eventStage)||typeof s.endRequested!=='boolean'||typeof s.bedRequested!=='boolean')return false;
  if(!list(s.counted,[...objects.filter(k=>!['board','fridge','player-door'].includes(k)),...people])||s.actions!==s.counted.length||s.actions>6||!list(s.spoken,people)||!list(s.visited,objects))return false;
  if(s.activeTarget!==null&&![...objects,...people,'event'].includes(s.activeTarget))return false;
  if(!Number.isFinite(s.duskTime)||s.duskTime<0||!Number.isFinite(s.elapsed)||s.elapsed<0||!pos(s.player)||!list(s.clues,Object.keys(CLUES))||!Array.isArray(s.history)||!s.history.every(line))return false;
  if(s.npcs&&(!Array.isArray(s.npcs)||s.npcs.length!==4||!list(s.npcs.map(n=>n.id),people)||!s.npcs.every(pos)))return false;
- const after=['','hint:su','hint:empathy','hint:visitor','event:choose','event:done',...Object.keys(CLUES).map(k=>'clue:'+k)];
+ const after=['','hint:su','hint:empathy','hint:visitor','event:choose','event:done','finale:done',...Object.keys(CLUES).map(k=>'clue:'+k)];
  if(s.dialogue&&(s.phase!=='explore'||!Array.isArray(s.dialogue.lines)||!s.dialogue.lines.length||!s.dialogue.lines.every(line)||!Number.isInteger(s.dialogue.index)||s.dialogue.index<0||s.dialogue.index>=s.dialogue.lines.length||!after.includes(s.dialogue.after)))return false;
  if(['intro','choice'].includes(s.eventStage)&&(!needsEvent(s)||s.activeTarget!=='event'))return false;
  if(s.eventStage==='choice'&&s.dialogue)return false;
  if(['response','done'].includes(s.eventStage)&&!s.choices[s.day])return false;
+ if(s.eventStage==='finale'&&(s.day!==7||s.activeTarget!=='event'||s.dialogue?.after!=='finale:done'))return false;
+ if(s.choices[6]==='C'&&meetingLock(s))return false;
+ if(s.flags.finaleRead&&(s.day!==7||s.phase!=='complete'))return false;
  if(s.phase!=='explore'&&needsEvent(s))return false;
  for(const [d,id]of Object.entries(s.choices)){const b=STORY_DAYS[d].choices[id];if(b.requires&&!s.clues.includes(b.requires)||b.requiresFlag&&!s.flags[b.requiresFlag])return false;}
  return true;
 }
-function readSave(){try{const raw=localStorage.getItem(SAVE);if(!raw)return{state:null};const s=JSON.parse(raw);if(s?.version===1){s.version=2;s.actions=0;s.activeTarget=null;s.duskTime=0;s.spoken=[...new Set((s.history||[]).filter(l=>l[0]!=='player').map(l=>l[0]))];}if(s?.version===2){s.version=3;s.counted=[...new Set([...(s.visited||[]),...(s.spoken||[]),...(s.activeTarget?[s.activeTarget]:[])].map(interactionKey))].slice(0,6);s.actions=s.counted.length;if(s.phase==='dusk'&&s.actions<6){s.phase='explore';s.duskTime=0;}}if(s?.version===3&&Array.isArray(s.counted)){const charged=s.counted.includes('pact');s.counted=s.counted.filter(k=>k!=='pact');s.actions=s.counted.length;s.version=4;if(charged&&s.phase==='dusk'&&s.actions<6){s.phase='explore';s.duskTime=0;}}if(s?.version===4&&Array.isArray(s.visited)){const removed=['lin-door','su-door','chen-door'];s.visited=s.visited.filter(id=>!removed.includes(id));if(removed.includes(s.activeTarget)){const person=s.activeTarget.replace('-door','');if(!s.spoken.includes(person))s.spoken.push(person);s.activeTarget=null;delete s.dialogue;}s.version=5;}if(s?.version===5){s.version=6;s.flags={};s.choices={};s.eventStage='idle';s.endRequested=false;s.bedRequested=!!s.bedRequested;}if(s?.version===6&&Array.isArray(s.counted)){const charged=s.counted.includes('player-door');s.counted=s.counted.filter(k=>k!=='player-door');s.actions=s.counted.length;if(charged&&s.actions<6&&s.phase==='explore')s.endRequested=false;s.version=7;}return valid(s)?{state:s}:{state:null,error:'这份进度读不出来，原记录已保留。可以重新开始。'};}catch{return{state:null,error:'无法读取进度，原记录已保留。'};}}
+function readSave(){try{const raw=localStorage.getItem(SAVE);if(!raw)return{state:null};const s=JSON.parse(raw);if(s?.version===1){s.version=2;s.actions=0;s.activeTarget=null;s.duskTime=0;s.spoken=[...new Set((s.history||[]).filter(l=>l[0]!=='player').map(l=>l[0]))];}if(s?.version===2){s.version=3;s.counted=[...new Set([...(s.visited||[]),...(s.spoken||[]),...(s.activeTarget?[s.activeTarget]:[])].map(interactionKey))].slice(0,6);s.actions=s.counted.length;if(s.phase==='dusk'&&s.actions<6){s.phase='explore';s.duskTime=0;}}if(s?.version===3&&Array.isArray(s.counted)){const charged=s.counted.includes('pact');s.counted=s.counted.filter(k=>k!=='pact');s.actions=s.counted.length;s.version=4;if(charged&&s.phase==='dusk'&&s.actions<6){s.phase='explore';s.duskTime=0;}}if(s?.version===4&&Array.isArray(s.visited)){const removed=['lin-door','su-door','chen-door'];s.visited=s.visited.filter(id=>!removed.includes(id));if(removed.includes(s.activeTarget)){const person=s.activeTarget.replace('-door','');if(!s.spoken.includes(person))s.spoken.push(person);s.activeTarget=null;delete s.dialogue;}s.version=5;}if(s?.version===5){s.version=6;s.flags={};s.choices={};s.eventStage='idle';s.endRequested=false;s.bedRequested=!!s.bedRequested;}if(s?.version===6&&Array.isArray(s.counted)){const charged=s.counted.includes('player-door');s.counted=s.counted.filter(k=>k!=='player-door');s.actions=s.counted.length;if(charged&&s.actions<6&&s.phase==='explore')s.endRequested=false;s.version=7;}if(s?.version===7)s.version=8;return valid(s)?{state:s}:{state:null,error:'这份进度读不出来，原记录已保留。可以重新开始。'};}catch{return{state:null,error:'无法读取进度，原记录已保留。'};}}
 function save(){state.npcs=npcs.map(({id,x,y})=>({id,x,y}));try{localStorage.setItem(SAVE,JSON.stringify(state));}catch{notify('浏览器没能保存进度，请先别关闭页面。');}}
 function applySettings(){document.body.classList.toggle('reduced',settings.reduced);if(audio)audio.gain.gain.value=settings.volume*.16;if(music)music.gain.gain.value=settings.volume*.055;try{localStorage.setItem(PREFS,JSON.stringify(settings));}catch{notify('设置仅在当前会话生效。');}}
 let music=null,musicTimer=null,musicStep=0;
@@ -38,7 +41,7 @@ function sound(kind='tap'){try{if(!audio){const C=window.AudioContext||window.we
 function stopMotion(){playerPath=[];destination=null;chase=null;state.player.step=0;}
 
 function hasReadPact(){return state.visited.includes('board')||state.visited.includes('fridge');}
-function refreshHud(){ $('atmosphere').textContent='合租氛围：'+ATMOSPHERES[state.atmosphere];$('day-number').textContent='第 '+state.day+' 天';document.querySelector('.day i').textContent='· '+(state.phase==='dusk'?'夜里':dayDefinition().time);$('finish-day').textContent=needsEvent()?'处理今天的事':'结束今天'; }
+function refreshHud(){ $('atmosphere').textContent='合租氛围：'+ATMOSPHERES[state.atmosphere];$('day-number').textContent='第 '+state.day+' 天';document.querySelector('.day i').textContent='· '+(state.phase==='dusk'?'夜里':dayDefinition().time);$('finish-day').textContent=state.day===7?'看看今天的事':needsEvent()?'处理今天的事':'结束今天'; }
 function setMode(next){mode=next;stopMotion();if(next==='play')startMusic();else stopMusic();$('menu').hidden=next!=='menu';$('hud').hidden=next!=='play';$('ending').hidden=next!=='end';$('world-tips').hidden=next!=='play';$('finish-day').hidden=state.phase==='dusk';$('nightfall').hidden=next!=='play'||state.phase!=='dusk';const talking=!!state.dialogue||state.eventStage==='choice';$('conversation').hidden=next!=='play'||!talking;document.body.classList.toggle('talking',next==='play'&&talking);if(next==='play'){refreshHud();if(state.dialogue)paintDialogue();else if(state.eventStage==='choice')paintChoices();}}
 function menu(){if(mode==='play')save();if($('modal').open)$('modal').close();setMode('menu');const r=readSave();$('continue').disabled=!r.state;$('save-info').textContent=r.state?'第 '+r.state.day+' 天 · '+(r.state.phase==='complete'?'已结束':dayDefinition(r.state.day).title):'暂无新版存档';if(r.error)notify(r.error);}
 function openModal(html,close='关闭'){stopMotion();$('modal').dataset.next='';$('modal-close').classList.toggle('welcome-action',close==='进屋逛逛');$('modal-body').innerHTML=html;$('modal-close').textContent=close;if(!$('modal').open)$('modal').showModal();$('modal-body').scrollTop=0;$('modal').scrollTop=0;}
@@ -50,9 +53,9 @@ function showRoster(first=false){openModal((first?guideText():'<h2>住户</h2>')
 function startDialogue(lines,after=''){stopMotion();state.dialogue={lines,index:0,after};save();paintDialogue();}
 function paintDialogue(){$('choices').hidden=true;$('speech-hint').textContent='点击画面继续';const d=state.dialogue;$('conversation').hidden=false;document.body.classList.add('talking');$('speaker').textContent=PEOPLE[d.lines[d.index][0]].name;printed=settings.speed===0?d.lines[d.index][1].length:0;typeElapsed=0;$('speech-text').textContent=d.lines[d.index][1].slice(0,printed);}
 function advance(){const d=state.dialogue;if(mode!=='play'||!d||$('modal').open)return;const t=d.lines[d.index][1];if(printed<t.length){printed=t.length;$('speech-text').textContent=t;return;}state.history.push(d.lines[d.index]);if(++d.index<d.lines.length){save();paintDialogue();return;}const after=d.after;delete state.dialogue;document.body.classList.remove('talking');$('conversation').hidden=true;if(!advanceStory(after))finishInteraction();refreshHud();save();}
-function targets(){if(state.phase==='dusk')return [PLAYER_BED];return [...dayObjects(),...npcs.map(a=>({...a,name:PEOPLE[a.id].name,hitX:a.x,hitY:a.y-25}))];}
+function targets(){if(state.phase==='dusk')return [PLAYER_BED];return [...dayObjects(),...visibleResidents().map(a=>({...a,name:PEOPLE[a.id].name,hitX:a.x,hitY:a.y-25}))];}
 function nearestTarget(){let best=null,dist=68;for(const t of targets()){const d=Math.hypot(t.x-state.player.x,t.y-state.player.y);if(d<dist){best=t;dist=d;}}return best;}
-function inspectPact(){if(state.day===5){openModal('<h2>胶带的痕迹</h2><p>公约不在了，碎纸散在餐桌上。</p>');return;}openModal('<div class="pact-paper"><h2>七日公约</h2><ol>'+PACT.map(t=>'<li>'+t+'</li>').join('')+'</ol></div>');}
+function inspectPact(){if(state.day>=5){openModal('<h2>胶带的痕迹</h2><p>公约不在了，碎纸散在餐桌上。</p>');return;}openModal('<div class="pact-paper"><h2>七日公约</h2><ol>'+PACT.map(t=>'<li>'+t+'</li>').join('')+'</ol></div>');}
 function inspectBag(){if(state.clues.includes('departure')){openModal('<h2>许川的背包</h2><p>离职证明已经收好，拉链也拉上了。</p>');return;}startDialogue([['player','许川，你的离职证明要掉了。'],['xu','哎，谢谢。上一份工作刚结束，这个还得留着办手续。']],'clue:departure');}
 function interact(id){
  if(mode!=='play'||state.phase!=='explore'||state.dialogue||state.eventStage==='choice'||$('modal').open)return;
@@ -70,9 +73,12 @@ function nightHud(){refreshHud();$('hud').hidden=false;$('finish-day').hidden=tr
 function beginDusk(){if(mode!=='play'||state.phase!=='explore')return;if(needsEvent()){state.endRequested=true;startEvent();save();return;}stopMotion();state.phase='dusk';state.activeTarget=null;state.bedRequested=false;state.duskTime=0;for(const a of npcs){a.path=[];a.bedRoute=false;}nightHud();save();}
 function requestEnd(){if(mode!=='play'||state.phase!=='explore'||state.dialogue||state.eventStage==='choice')return;if(needsEvent()){startEvent();return;}openModal('<h2>结束今天？</h2><button id="confirm-end" class="primary">结束今天</button>','再看看');$('confirm-end').onclick=()=>{$('modal').close();beginDusk();};}
 function showEnd(){
- $('nightfall').hidden=true;setMode('end');$('end-day').textContent='第'+['','一','二','三','四','五'][state.day]+'天结束';$('end-atmosphere').textContent='合租氛围：'+ATMOSPHERES[state.atmosphere];
- $('end-agreement').textContent=dayDefinition().end;$('end-clue').textContent='';$('next-day').hidden=state.day>=5;$('end-note').hidden=state.day<5;
- $('next-day').textContent='睡醒，继续第'+(state.day+1)+'天';
+ $('nightfall').hidden=true;setMode('end');const final=state.day===7?endingFor():null;
+ $('end-day').textContent=final?final.title:'第'+['','一','二','三','四','五','六'][state.day]+'天结束';
+ $('end-atmosphere').textContent='合租氛围：'+ATMOSPHERES[state.atmosphere];
+ $('end-agreement').textContent=final?final.summary:dayDefinition().end;
+ $('end-clue').textContent=final?final.closing:'';$('next-day').hidden=!!final;$('end-note').hidden=!final||final.id!=='reconcile';$('end-note').textContent=final?.id==='reconcile'?'隐藏结局':'';
+ $('next-day').textContent='睡醒，继续第'+(state.day+1)+'天';$('replay').textContent=final?'重新开始七日公约':'重新开始';
 }
 function resume(){const r=readSave();if(!r.state)return notify(r.error||'暂无存档');state=r.state;npcs=dayNPCs(state.npcs);sound();if(state.phase==='complete')showEnd();else{setMode('play');if(state.phase==='dusk'){nightHud();if(state.bedRequested)activateTarget('bed');}else if(state.eventStage==='choice')paintChoices();else if(state.introStep==='guide'||state.introStep==='roster')showRoster(true);else if(state.activeTarget&&!state.dialogue)interact(state.activeTarget);else if(state.actions>=6&&!state.dialogue)beginDusk();}}
 function settingsModal(){openModal('<h2>设置</h2><label>声音音量<input id="volume" aria-label="声音音量" type="range" min="0" max="1" step="0.05"></label><label>文字速度<select id="speed"><option value="50">慢</option><option value="30">标准</option><option value="20">快</option><option value="0">即时</option></select></label><label>减少界面动态<input id="reduce" type="checkbox"></label><p>声音包含轻柔的环境音乐和互动提示。减少动态会关闭浮动提示与镜头缓动，角色移动保留。</p>','返回');$('volume').value=settings.volume;$('speed').value=settings.speed;$('reduce').checked=settings.reduced;$('volume').oninput=e=>{settings.volume=+e.target.value;applySettings();sound();};$('speed').onchange=e=>{settings.speed=+e.target.value;applySettings();};$('reduce').onchange=e=>{settings.reduced=e.target.checked;applySettings();};}
@@ -92,7 +98,7 @@ function paintTips(){
   const done=state.day===1&&t.id==='sofa'?state.clues.includes('departure'):read;
   const caption=tipText(t);b.classList.toggle('event-tip',eventPerson(t.id));
   b.classList.toggle('seen',!person&&done);b.classList.toggle('pact-tip',t.id==='board');
-  const label=t.id==='board'?(state.day===5?'胶带':'公约'):person?(eventPerson(t.id)?'!':'…'):done?'✓':'?';
+  const label=t.id==='board'?(state.day>=5?'胶带':'公约'):person?(eventPerson(t.id)?'!':'…'):done?'✓':'?';
   if(b.dataset.caption!==caption||b.dataset.symbol!==label){b.dataset.caption=caption;b.dataset.symbol=label;b.textContent=label;const small=document.createElement('span');small.className='tip-caption';small.textContent=caption;b.append(small);b.setAttribute('aria-label',caption);}
   const x=t.hitX*cam.scale+cam.x,y=(t.hitY-(person?45:27))*cam.scale+cam.y,w=t.id==='board'?58:44,h=44;
   if(x<22||x>innerWidth-22||y<60||y>innerHeight-35){b.hidden=true;continue;}

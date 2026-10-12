@@ -137,13 +137,13 @@ function renderWorld(dt){clock+=dt;ctx.clearRect(0,0,vw,vh);ctx.fillStyle='#293f
 
  drawDayOneProps(ctx);drawStoryProps(ctx);
  if(destination){ctx.strokeStyle='#fff3cb';ctx.lineWidth=2;ctx.beginPath();ctx.ellipse(destination.x,destination.y,10,5,0,0,Math.PI*2);ctx.stroke();}
- const actors=[...npcs,{...state.player,id:'player'}].sort((a,b)=>a.y-b.y);
+ const actors=[...visibleResidents(),{...state.player,id:'player'}].sort((a,b)=>a.y-b.y);
  for(const a of actors){if(a.asleep)drawSleeper(ctx,a);else drawPerson(ctx,a);if(a.id==='player'){ctx.fillStyle='#fff2cc';ctx.beginPath();ctx.moveTo(a.x-4,a.y-62);ctx.lineTo(a.x+4,a.y-62);ctx.lineTo(a.x,a.y-57);ctx.fill();}}
  if(playing&&!state.dialogue){const t=nearestTarget();if(t){const x=t.hitX,y=t.hitY;ctx.strokeStyle='#fff7d7';ctx.lineWidth=2;ctx.beginPath();ctx.ellipse(x,y+12,21,8,0,0,Math.PI*2);ctx.stroke();}}
  drawNight(ctx);ctx.restore();}
 function drawDayOneProps(g){
  // A signed paper on the existing noticeboard is the first visible destination.
- if(state.day!==5){round(g,647,293,34,22,'#fff3cf',1,'#baa982');
+ if(state.day<5){round(g,647,293,34,22,'#fff3cf',1,'#baa982');
  for(let i=0;i<4;i++)line(g,652,298+i*4,676,298+i*4,'#8c947b',1);
  round(g,660,290,8,5,'#b77860',1,null);
  // A visible paper on the real fridge, not an invisible target beside the sink.

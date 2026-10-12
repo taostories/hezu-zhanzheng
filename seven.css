@@ -73,6 +73,9 @@ dialog #modal-body>button{display:block;margin:14px auto 0;min-width:160px}.end-
 #choices{overflow-y:auto;min-height:0;overscroll-behavior:contain;padding:3px}
 #choices button{text-align:center;flex-shrink:0;line-height:1.5;min-height:48px}
 #speech-hint{text-align:center}
+.choice-lock{display:block;margin-top:4px;font-size:13px;line-height:1.5;color:#80563d}
+#choices button:disabled{opacity:1;background:#dcded1;color:#747b6b;border-style:dashed;cursor:not-allowed}
+#end-clue{font-size:17px;line-height:1.8;margin:24px auto;max-width:640px}
 .world-tip.event-tip{font-size:24px;color:#713f30}
 .world-tip.event-tip:before{background:#f3c88a;border-color:#a66645;border-width:2px}
 .talking #game-header .tools{visibility:hidden}

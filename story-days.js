@@ -55,26 +55,31 @@ const DAY_PLACES={
  5:{lin:[752,464],su:[624,368],chen:[624,528],xu:[496,464]}
 };
 function dayDefinition(day=state.day){return STORY_DAYS[day];}
-function needsEvent(s=state){return !!STORY_DAYS[s.day]?.choices&&!s.choices[s.day];}
-function availableChoices(s=state){return Object.entries(STORY_DAYS[s.day]?.choices||{}).filter(([,b])=>(!b.requires||s.clues.includes(b.requires))&&(!b.requiresFlag||s.flags[b.requiresFlag]));}
+function needsEvent(s=state){return s.day===7?!s.flags.finaleRead:!!STORY_DAYS[s.day]?.choices&&!s.choices[s.day];}
+function availableChoices(s=state){
+ const choices=STORY_DAYS[s.day]?.choices||{};
+ const keys=s.day===3?[s.clues.includes('drink')?'E':'A','B','C','D']:Object.keys(choices);
+ return keys.map(id=>[id,choices[id]]).filter(([,b])=>(!b.requires||s.clues.includes(b.requires))&&(!b.requiresFlag||s.flags[b.requiresFlag]));
+}
 function evaluateChoice(atmosphere,pact,flags,day,id){
  const b=STORY_DAYS[day].choices[id];let a=b.atmosphere??atmosphere;
  if(b.shift)a+=b.shift;if(b.cap!==undefined)a=Math.min(a,b.cap);if(b.floor!==undefined)a=Math.max(a,b.floor);
  return {atmosphere:Math.max(0,Math.min(3,a)),pact:day===5?'torn':b.pact||pact,flags:{...flags,...(b.flag?{[b.flag]:true}:{})}};
 }
 function clueGroups(s=state){return [s.clues.includes('departure')&&s.clues.includes('bill'),'drink','medical','hairtie','scrap'].filter((c,i)=>i===0?c:s.clues.includes(c)).length;}
-function dayObjects(){const objects=OBJECTS.map(o=>({...o}));if(state.day===5)objects.push({id:'dining',name:'公约残片',x:880,y:528,hitX:880,hitY:565});return objects;}
+function dayObjects(){const objects=OBJECTS.map(o=>({...o}));if(state.day>=5)objects.push({id:'dining',name:'公约残片',x:880,y:528,hitX:880,hitY:565});return objects;}
 function dayNPCs(saved){const list=createNPCs(saved);if(!saved&&DAY_PLACES[state.day])for(const a of list){[a.x,a.y]=DAY_PLACES[state.day][a.id];a.dir='down';}return list;}
 function eventPerson(id){return state.phase==='explore'&&needsEvent()&&dayDefinition().eventPeople.includes(id);}
 function tipText(t){
  if(eventPerson(t.id))return dayDefinition().eventText;
  if(PEOPLE[t.id])return '和'+t.name+'聊聊';
- if(t.id==='board'||t.id==='fridge')return state.day===5?'看看胶带留下的痕迹':'看看七日公约';
+ if(t.id==='board'||t.id==='fridge')return state.day>=5?'看看胶带留下的痕迹':'看看七日公约';
  return DAY_OBSERVATIONS[state.day]?.[t.id]?.[0]||OBJECT_TIPS[t.id];
 }
 function grantClue(id){if(state.clues.includes(id))return;state.clues.push(id);notify('记下了：'+CLUES[id].title);}
 function inspectDayObject(t){
  if(state.day===1)return false;
+ if(state.day===6&&t.id==='sofa'){openModal('<h2>沙发边的行李</h2><p>'+(state.atmosphere<2?'箱子装了一半，换洗的衣服还留在外面。':'箱子敞着，衣服和日用品还没收进去。')+'</p>');return true;}
  const o=DAY_OBSERVATIONS[state.day]?.[t.id];
  if(o){if(o[2])grantClue(o[2]);openModal('<h2>'+o[0]+'</h2><p>'+o[1]+'</p>');save();return true;}
  if(t.id==='player-door'){openModal('<h2>自己的房间</h2><p>窗边留着一点光，床单还平平整整。</p>');return true;}return false;
@@ -94,18 +99,19 @@ function chatDay(id){
 }
 function startEvent(){
  if(mode!=='play'||state.phase!=='explore'||!needsEvent()||state.dialogue||$('modal').open)return;
- state.activeTarget='event';state.eventStage='intro';startDialogue(dayDefinition().lines,'event:choose');
+ state.activeTarget='event';if(state.day===7){state.eventStage='finale';startDialogue(endingFor().lines,'finale:done');return;}state.eventStage='intro';startDialogue(dayDefinition().lines,'event:choose');
 }
 function paintChoices(){
  clearTimeout(toastTimer);$('toast').hidden=true;stopMotion();$('conversation').hidden=false;document.body.classList.add('talking');$('speaker').textContent='我';$('speech-text').textContent='你想怎么说？';$('speech-hint').textContent='';$('choices').hidden=false;$('choices').replaceChildren();
- for(const [id,b] of availableChoices()){const el=document.createElement('button');el.textContent=b.label;el.dataset.choice=id;el.onclick=()=>commitChoice(id);$('choices').append(el);}
+ for(const [id,b] of availableChoices()){const el=document.createElement('button');el.textContent=b.label;el.dataset.choice=id;const reason=choiceLock(id);el.disabled=!!reason;if(reason){const hint=document.createElement('small');hint.className='choice-lock';hint.textContent=reason;el.append(hint);}el.onclick=()=>commitChoice(id);$('choices').append(el);}
 }
 function commitChoice(id){
- if(state.eventStage!=='choice'||!needsEvent()||!availableChoices().some(([key])=>key===id))return;
+ if(state.eventStage!=='choice'||!needsEvent()||choiceLock(id)||!availableChoices().some(([key])=>key===id))return;
  const b=dayDefinition().choices[id];state.history.push(['player',b.label]);Object.assign(state,evaluateChoice(state.atmosphere,state.pact,state.flags,state.day,id));
  state.choices[state.day]=id;state.eventStage='response';$('choices').hidden=true;startDialogue(b.reply,'event:done');refreshHud();
 }
 function advanceStory(after){
+ if(after==='finale:done'){finishFinale();return true;}
  if(after.startsWith('clue:'))grantClue(after.slice(5));
  if(after==='hint:su')state.flags.suHint=true;
  if(after==='hint:empathy')state.flags.empathy=true;
@@ -115,12 +121,12 @@ function advanceStory(after){
  return false;
 }
 function nextDay(){
- if(state.phase!=='complete'||state.day>=5)return;
+ if(state.phase!=='complete'||state.day>=7)return;
  const carry={day:state.day+1,atmosphere:state.atmosphere,pact:state.pact,clues:[...state.clues],flags:{...state.flags},choices:{...state.choices},history:[...state.history],introStep:'done'};
  state={...INITIAL(),...carry};if(state.day===5)state.pact='torn';npcs=dayNPCs();setMode('play');save();openModal('<h2>第 '+state.day+' 天 · '+dayDefinition().title+'</h2><p>'+dayDefinition().intro+'</p>','开始');
 }
 function drawStoryProps(g){
- if(state.day<2)return;
+ if(state.day<2)return;drawFinaleProps(g);
  if(state.pact==='marked'||state.pact==='scored'){
   for(const [x,y]of[[1075,417],[674,307]]){line(g,x-7,y-4,x,y,'#746f65',1.6);if(state.pact==='scored'){line(g,x-8,y,x+2,y-8,'#746f65',1.8);line(g,x-7,y-6,x,y+3,'#746f65',1);}}
  }
@@ -131,9 +137,9 @@ function drawStoryProps(g){
   round(g,588,447,28,18,'#405751',3);ellipse(g,602,456,5,5,'#96b6b1');line(g,602,465,590,496,'#5d6252',2);line(g,602,465,614,496,'#5d6252',2);
   ellipse(g,611,452,2,2,'#d07960');
  }
- if(state.day===5){
+ if(state.day>=5){
   for(let i=0;i<5;i++){g.save();g.translate(855+i*11,558+(i%2)*8);g.rotate((i-2)*.18);round(g,0,0,20,9,'#f8ecd0',1,'#b9aa8d');line(g,4,4,16,4,'#9d947f',1);g.restore();}
-  if(needsEvent()||state.flags.guestStays){
+  if(state.day===5&&(needsEvent()||state.flags.guestStays)){
    // Visitor silhouette: separate muted outfit, short side-swept hair, no resident identity.
    ellipse(g,710,526,13,5,'#293b3828');round(g,701,482,21,34,'#9294a0',7,'#596475');line(g,705,514,704,525,'#576574',7);line(g,718,514,719,525,'#576574',7);ellipse(g,711,474,12,14,'#d4b69d');ellipse(g,711,465,13,10,'#5b5a54');
   }
