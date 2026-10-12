@@ -135,7 +135,7 @@ function marker(g,x,y,label,color='#e4ae68'){const b=typeof settings!=='undefine
 function resizeWorld(){vw=innerWidth;vh=innerHeight;const d=Math.min(devicePixelRatio||1,2);canvas.width=Math.round(vw*d);canvas.height=Math.round(vh*d);ctx.setTransform(d,0,0,d,0,0);}
 function renderWorld(dt){clock+=dt;ctx.clearRect(0,0,vw,vh);ctx.fillStyle='#293f38';ctx.fillRect(0,0,vw,vh);const playing=typeof mode!=='undefined'&&mode==='play';const compact=vh<540;const scale=playing&&compact?Math.max(.72,vh/430):Math.min((vw-24)/WW,(vh-70)/WH);cam.scale=scale;const focus=playing?state.player:{x:WW/2,y:WH/2};const targetX=WW*scale<vw?(vw-WW*scale)/2:Math.min(18,Math.max(vw-WW*scale-18,vw/2-focus.x*scale));const targetY=WH*scale<vh-60?60+(vh-60-WH*scale)/2:Math.min(64,Math.max(vh-WH*scale-25,vh*.54-focus.y*scale));const lerp=typeof settings!=='undefined'&&settings.reduced?1:Math.min(1,dt*9);cam.x+=(targetX-cam.x)*lerp;cam.y+=(targetY-cam.y)*lerp;ctx.save();ctx.translate(cam.x,cam.y);ctx.scale(scale,scale);ctx.drawImage(staticArt,0,0);
 
- drawDayOneProps(ctx);
+ drawDayOneProps(ctx);drawStoryProps(ctx);
  if(destination){ctx.strokeStyle='#fff3cb';ctx.lineWidth=2;ctx.beginPath();ctx.ellipse(destination.x,destination.y,10,5,0,0,Math.PI*2);ctx.stroke();}
  const actors=[...npcs,{...state.player,id:'player'}].sort((a,b)=>a.y-b.y);
  for(const a of actors){if(a.asleep)drawSleeper(ctx,a);else drawPerson(ctx,a);if(a.id==='player'){ctx.fillStyle='#fff2cc';ctx.beginPath();ctx.moveTo(a.x-4,a.y-62);ctx.lineTo(a.x+4,a.y-62);ctx.lineTo(a.x,a.y-57);ctx.fill();}}
@@ -143,17 +143,19 @@ function renderWorld(dt){clock+=dt;ctx.clearRect(0,0,vw,vh);ctx.fillStyle='#293f
  drawNight(ctx);ctx.restore();}
 function drawDayOneProps(g){
  // A signed paper on the existing noticeboard is the first visible destination.
- round(g,647,293,34,22,'#fff3cf',1,'#baa982');
+ if(state.day!==5){round(g,647,293,34,22,'#fff3cf',1,'#baa982');
  for(let i=0;i<4;i++)line(g,652,298+i*4,676,298+i*4,'#8c947b',1);
  round(g,660,290,8,5,'#b77860',1,null);
  // A visible paper on the real fridge, not an invisible target beside the sink.
  round(g,1063,399,19,27,'#fff4ce',1,'#b4a386');round(g,1068,398,9,4,'#bf7963',1,null);
  for(let i=0;i<4;i++)line(g,1067,407+i*4,1079,407+i*4,'#98a184',.8);
+ }else{round(g,660,290,8,5,'#b77860',1,null);round(g,1068,398,9,4,'#bf7963',1,null);}
  // Xu's backpack and an exposed document; the document disappears once put away.
  round(g,456,398,26,29,'#a69472',5,'#70694f');round(g,462,414,14,10,'#c6b592',3);line(g,462,400,476,400,'#6f755c',2);
- if(!state.clues.includes('departure')){round(g,462,391,15,15,'#f7efd7',1,'#bcb193');line(g,465,395,473,395,'#92927b',1);}
+ if(state.day===1&&!state.clues.includes('departure')){round(g,462,391,15,15,'#f7efd7',1,'#bcb193');line(g,465,395,473,395,'#92927b',1);}
  // Takeaway cartons, directly at the kitchen counter edge.
- round(g,918,370,26,18,'#e4c79d',2);round(g,941,377,19,14,'#f5e7c9',2);line(g,921,369,951,383,'#7d735b',1.5);line(g,921,366,951,380,'#7d735b',1.5);
+ if(state.day===1){round(g,918,370,26,18,'#e4c79d',2);round(g,941,377,19,14,'#f5e7c9',2);line(g,921,369,951,383,'#7d735b',1.5);line(g,921,366,951,380,'#7d735b',1.5);
+ }
  // Balcony: glass rail, greenery and unopened boxes. No text over the room.
  line(g,305,660,520,660,'#7f9d91',5);for(let x=308;x<530;x+=40)line(g,x,660,x,677,'#718d83',3);
  round(g,329,607,45,35,'#c49d70',3);line(g,350,608,350,640,'#e3cda6',6);line(g,335,616,344,616,'#8d7c60',1);plant(g,466,609);
@@ -176,7 +178,7 @@ function drawSleeper(g,a){
 }
 function drawNight(g){
  const night=mode==='play'&&['dusk','complete'].includes(state.phase);
- if(!night)return;
+ if(!night){if(mode==='play'&&[2,5].includes(state.day)){g.fillStyle='rgba(17,29,61,.14)';g.fillRect(0,0,WW,WH);}return;}
  const progress=settings.reduced?1:Math.min(1,(state.duskTime||0)/2.5);
  // Tint only the world: dialogue, buttons and the return-home task remain readable.
  g.fillStyle='rgba(17,29,61,'+(.57*progress)+')';g.fillRect(0,0,WW,WH);

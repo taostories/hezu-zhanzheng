@@ -66,3 +66,19 @@ dialog #modal-body>button{display:block;margin:14px auto 0;min-width:160px}.end-
 /* Night dims the room, but leaves the bed clickable. */
 #nightfall{inset:auto 12px 18px;background:transparent;pointer-events:none;z-index:6}
 #nightfall p{margin:0;padding:10px 20px;border-radius:8px;background:#182536e8;font-size:18px;letter-spacing:1px;text-align:center}
+
+/* Choices remain beneath the player's speech and scroll inside the screen. */
+#conversation{max-height:calc(100dvh - 150px)}
+#conversation .speech{flex-shrink:0}
+#choices{overflow-y:auto;min-height:0;overscroll-behavior:contain;padding:3px}
+#choices button{text-align:center;flex-shrink:0;line-height:1.5;min-height:48px}
+#speech-hint{text-align:center}
+.world-tip.event-tip{font-size:24px;color:#713f30}
+.world-tip.event-tip:before{background:#f3c88a;border-color:#a66645;border-width:2px}
+.talking #game-header .tools{visibility:hidden}
+@media(max-height:520px) and (orientation:landscape){
+ #conversation{max-height:calc(100dvh - 100px);left:max(5%,env(safe-area-inset-left));right:max(5%,env(safe-area-inset-right))}
+ #choices button{font-size:15px;min-height:46px;padding:8px 12px}
+ #conversation .speech{padding:8px 16px}#speech-text{line-height:1.5}
+ #ending h1{margin-top:6px}.end-actions button{min-height:44px}
+}
