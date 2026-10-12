@@ -76,6 +76,18 @@ dialog #modal-body>button{display:block;margin:14px auto 0;min-width:160px}.end-
 .choice-lock{display:block;margin-top:4px;font-size:13px;line-height:1.5;color:#80563d}
 #choices button:disabled{opacity:1;background:#dcded1;color:#747b6b;border-style:dashed;cursor:not-allowed}
 #end-clue{font-size:17px;line-height:1.8;margin:24px auto;max-width:640px}
+/* Vector brush lettering keeps the exact four glyphs consistent on all devices. */
+.menu-copy{width:min(820px,96vw);padding:24px 30px 34px;background:radial-gradient(ellipse,#fff2dce8 35%,#fff2dcb8 80%,#fff2dc70);border-color:#fff4db80}
+.menu h1.splash-title{margin:0 -20px 18px;line-height:0;text-indent:0;letter-spacing:0}
+.splash-title img{display:block;width:100%;height:auto;filter:drop-shadow(0 3px 0 #fff3dbaa);pointer-events:none}
+.menu-actions{max-width:300px;margin-inline:auto}
+@media(max-height:520px) and (orientation:landscape){
+ .menu-copy{width:min(640px,94vw);padding:8px 25px 16px}
+ .menu h1.splash-title{margin:-2px -12px 6px}
+ .splash-title img{max-height:140px;object-fit:contain}
+ .menu-actions{max-width:270px;gap:6px}
+ .menu-actions button{min-height:44px}
+}
 .world-tip.event-tip{font-size:24px;color:#713f30}
 .world-tip.event-tip:before{background:#f3c88a;border-color:#a66645;border-width:2px}
 .talking #game-header .tools{visibility:hidden}
