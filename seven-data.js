@@ -8,15 +8,15 @@ const PEOPLE = {
 };
 const ATMOSPHERES=['和睦','微妙','紧绷','对立'];
 const PACT=[
- '23:00 后，公共区域不喧哗。',
- '私人物品写上名字，没问过就别用。',
- '公共区域用完，顺手收拾一下。',
- '带访客、拍摄录像，提前告知所有人；拍到谁，还得问本人。',
- '住满七天，许川搬离沙发。'
+ '23:00后公共区域禁止喧哗',
+ '私人物品标记名字，不可擅自动用',
+ '公共区域使用后简单收拾',
+ '访客、拍摄录像，需要提前告知所有人',
+ '7日期满，许川搬离沙发'
 ];
 const CLUES={departure:{title:'许川的离职证明',text:'许川说上一份工作刚结束，证明还要留着办手续。',group:'许川的生活困境',detail:'目前只知道他离职了，最近过得怎么样，还没聊到。'}};
 // Only atmosphere is a relationship measure. Discovery flags never award points.
-const INITIAL=()=>({version:2,actions:0,spoken:[],activeTarget:null,duskTime:0,edition:'seven-day',day:1,phase:'explore',introStep:'guide',atmosphere:0,pact:'intact',signed:true,clues:[],visited:[],history:[],player:{x:624,y:368},npcs:null,elapsed:0});
+const INITIAL=()=>({version:3,actions:0,counted:[],spoken:[],activeTarget:null,duskTime:0,edition:'seven-day',day:1,phase:'explore',introStep:'guide',atmosphere:0,pact:'intact',signed:true,clues:[],visited:[],history:[],player:{x:624,y:368},npcs:null,elapsed:0});
 const OBJECTS=[
  {id:'board',name:'公约板',x:656,y:336,hitX:672,hitY:304},
  {id:'sofa',name:'背包',x:464,y:452,hitX:468,hitY:411},

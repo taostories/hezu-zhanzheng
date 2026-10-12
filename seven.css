@@ -48,3 +48,7 @@ dialog #modal-body>button{display:block;margin:14px auto 0;min-width:160px}.end-
  dialog #modal-close,dialog #modal-close.welcome-action{margin:12px auto 0;min-height:44px;padding:9px 20px}
  dialog{max-height:94dvh;padding:14px 18px}dialog h2{font-size:20px;margin-bottom:6px}#modal-body>p{margin:4px 0}.roster-row{margin:0}.roster-row canvas{height:56px;width:38px}.roster-row strong{margin-bottom:2px}
 }
+
+/* Atmosphere is a primary game state, equal in size to the current day. */
+.day #atmosphere{font-size:28px;font-weight:600;line-height:1.3;letter-spacing:0;color:#344c43;margin-bottom:6px}
+@media(max-height:520px) and (orientation:landscape){.day #atmosphere{font-size:24px}.tools{flex-wrap:wrap;max-width:290px}header{gap:12px}}
