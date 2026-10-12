@@ -138,9 +138,9 @@ function renderWorld(dt){clock+=dt;ctx.clearRect(0,0,vw,vh);ctx.fillStyle='#293f
  drawDayOneProps(ctx);
  if(destination){ctx.strokeStyle='#fff3cb';ctx.lineWidth=2;ctx.beginPath();ctx.ellipse(destination.x,destination.y,10,5,0,0,Math.PI*2);ctx.stroke();}
  const actors=[...npcs,{...state.player,id:'player'}].sort((a,b)=>a.y-b.y);
- for(const a of actors){drawPerson(ctx,a);if(a.id==='player'){ctx.fillStyle='#fff2cc';ctx.beginPath();ctx.moveTo(a.x-4,a.y-62);ctx.lineTo(a.x+4,a.y-62);ctx.lineTo(a.x,a.y-57);ctx.fill();}}
+ for(const a of actors){if(a.asleep)drawSleeper(ctx,a);else drawPerson(ctx,a);if(a.id==='player'){ctx.fillStyle='#fff2cc';ctx.beginPath();ctx.moveTo(a.x-4,a.y-62);ctx.lineTo(a.x+4,a.y-62);ctx.lineTo(a.x,a.y-57);ctx.fill();}}
  if(playing&&!state.dialogue){const t=nearestTarget();if(t){const x=t.hitX,y=t.hitY;ctx.strokeStyle='#fff7d7';ctx.lineWidth=2;ctx.beginPath();ctx.ellipse(x,y+12,21,8,0,0,Math.PI*2);ctx.stroke();}}
- ctx.restore();}
+ drawNight(ctx);ctx.restore();}
 function drawDayOneProps(g){
  // A signed paper on the existing noticeboard is the first visible destination.
  round(g,647,293,34,22,'#fff3cf',1,'#baa982');
@@ -175,9 +175,9 @@ function drawSleeper(g,a){
  g.restore();
 }
 function drawNight(g){
- const night=mode==='play'&&['sleep','complete'].includes(state.phase);
+ const night=mode==='play'&&['dusk','complete'].includes(state.phase);
  if(!night)return;
- const progress=settings.reduced?1:Math.min(1,(state.nightTime||0)/2.5);
+ const progress=settings.reduced?1:Math.min(1,(state.duskTime||0)/2.5);
  // Tint only the world: dialogue, buttons and the return-home task remain readable.
  g.fillStyle='rgba(17,29,61,'+(.57*progress)+')';g.fillRect(0,0,WW,WH);
  for(const [x,y]of[[185,271],[464,271],[752,271],[1008,271],[385,458]]){

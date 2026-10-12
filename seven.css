@@ -62,3 +62,7 @@ dialog #modal-body>button{display:block;margin:14px auto 0;min-width:160px}.end-
 .pact-paper ol{text-align:center;list-style-position:inside;padding-left:0}
 .pact-paper{margin-inline:auto}
 @media(max-height:520px) and (orientation:landscape){#atmosphere{font-size:24px;padding:9px 12px}#game-header{gap:6px 12px}.tools{gap:3px}}
+
+/* Night dims the room, but leaves the bed clickable. */
+#nightfall{inset:auto 12px 18px;background:transparent;pointer-events:none;z-index:6}
+#nightfall p{margin:0;padding:10px 20px;border-radius:8px;background:#182536e8;font-size:18px;letter-spacing:1px;text-align:center}

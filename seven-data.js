@@ -16,7 +16,7 @@ const PACT=[
 ];
 const CLUES={departure:{title:'许川的离职证明',text:'许川说上一份工作刚结束，证明还要留着办手续。',group:'许川的生活困境',detail:'目前只知道他离职了，最近过得怎么样，还没聊到。'}};
 // Only atmosphere is a relationship measure. Discovery flags never award points.
-const INITIAL=()=>({version:5,actions:0,counted:[],spoken:[],activeTarget:null,duskTime:0,edition:'seven-day',day:1,phase:'explore',introStep:'guide',atmosphere:0,pact:'intact',signed:true,clues:[],visited:[],history:[],player:{x:624,y:368},npcs:null,elapsed:0});
+const INITIAL=()=>({version:5,actions:0,counted:[],spoken:[],activeTarget:null,bedRequested:false,duskTime:0,edition:'seven-day',day:1,phase:'explore',introStep:'guide',atmosphere:0,pact:'intact',signed:true,clues:[],visited:[],history:[],player:{x:624,y:368},npcs:null,elapsed:0});
 const OBJECTS=[
  {id:'board',name:'公约板',x:656,y:336,hitX:672,hitY:304},
  {id:'sofa',name:'背包',x:464,y:452,hitX:468,hitY:411},
@@ -34,3 +34,5 @@ const OBSERVATIONS={
  'player-door':{title:'自己的房间',text:'床单铺好了，钥匙也找到了。今天总算没把什么落在旧住处。'}
 };
 const CHAT={lin:'公约贴上了？挺好，省得以后全靠记性。',su:'阳台那箱是我的。先放一晚，明天就拆。',chen:'刚想拍张合照。算了，等大家收拾好了再问。',xu:'沙发挺宽的。我包放边上，不挡你们走路。'};
+
+const PLAYER_BED={id:'bed',name:'自己的床',x:1008,y:176,hitX:976,hitY:110};
