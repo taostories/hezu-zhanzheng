@@ -16,7 +16,7 @@ const PACT=[
 ];
 const CLUES={departure:{title:'许川的离职证明',text:'许川说上一份工作刚结束，证明还要留着办手续。',group:'许川的生活困境',detail:'目前只知道他离职了，最近过得怎么样，还没聊到。'}};
 // Only atmosphere is a relationship measure. Discovery flags never award points.
-const INITIAL=()=>({version:4,actions:0,counted:[],spoken:[],activeTarget:null,duskTime:0,edition:'seven-day',day:1,phase:'explore',introStep:'guide',atmosphere:0,pact:'intact',signed:true,clues:[],visited:[],history:[],player:{x:624,y:368},npcs:null,elapsed:0});
+const INITIAL=()=>({version:5,actions:0,counted:[],spoken:[],activeTarget:null,duskTime:0,edition:'seven-day',day:1,phase:'explore',introStep:'guide',atmosphere:0,pact:'intact',signed:true,clues:[],visited:[],history:[],player:{x:624,y:368},npcs:null,elapsed:0});
 const OBJECTS=[
  {id:'board',name:'公约板',x:656,y:336,hitX:672,hitY:304},
  {id:'sofa',name:'背包',x:464,y:452,hitX:468,hitY:411},
@@ -24,19 +24,13 @@ const OBJECTS=[
  {id:'kitchen',name:'外卖盒',x:912,y:400,hitX:933,hitY:383},
  {id:'balcony',name:'纸箱',x:400,y:620,hitX:352,hitY:624},
  {id:'bathroom',name:'洗手台',x:704,y:624,hitX:720,hitY:576},
- {id:'lin-door',name:'敲敲门',x:192,y:290,hitX:192,hitY:266},
- {id:'su-door',name:'敲敲门',x:448,y:290,hitX:448,hitY:266},
- {id:'chen-door',name:'敲敲门',x:736,y:290,hitX:736,hitY:266},
  {id:'player-door',name:'自己的门',x:992,y:290,hitX:992,hitY:266}
 ];
-const OBJECT_TIPS={board:'看看七日公约',sofa:'包边露出一张纸',fridge:'看看冰箱上的公约',kitchen:'外卖盒还没收',balcony:'谁的纸箱没拆？',bathroom:'看看新摆好的杯子','lin-door':'敲门聊两句','su-door':'敲门聊两句','chen-door':'敲门聊两句','player-door':'看看自己的房间'};
+const OBJECT_TIPS={board:'看看七日公约',sofa:'包边露出一张纸',fridge:'看看冰箱上的公约',kitchen:'外卖盒还没收',balcony:'谁的纸箱没拆？',bathroom:'看看新摆好的杯子','player-door':'看看自己的房间'};
 const OBSERVATIONS={
  kitchen:{title:'晚饭留下的盒子',text:'筷子还架在盒沿，里面剩了两颗花生。陈灿说等视频传完就来收。'},
  balcony:{title:'还没拆的纸箱',text:'箱子上写着“画具，别压”。上头却放了一袋薯片。'},
  bathroom:{title:'刚收拾过',text:'镜子擦得很亮。五个漱口杯挨着摆好，最边上那个还是新的。'},
- 'lin-door':{speaker:'lin',text:'门没关，我在理书。要借剪刀吗？桌上那把就行。'},
- 'su-door':{speaker:'su',text:'我这边有点乱。先别进来啊，地上有张画没干。'},
- 'chen-door':{speaker:'chen',text:'你来得正好，这灯一开像不像烧烤摊？我得换个灯泡。'},
  'player-door':{title:'自己的房间',text:'床单铺好了，钥匙也找到了。今天总算没把什么落在旧住处。'}
 };
 const CHAT={lin:'公约贴上了？挺好，省得以后全靠记性。',su:'阳台那箱是我的。先放一晚，明天就拆。',chen:'刚想拍张合照。算了，等大家收拾好了再问。',xu:'沙发挺宽的。我包放边上，不挡你们走路。'};

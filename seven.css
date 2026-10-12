@@ -52,3 +52,13 @@ dialog #modal-body>button{display:block;margin:14px auto 0;min-width:160px}.end-
 /* Atmosphere is a primary game state, equal in size to the current day. */
 .day #atmosphere{font-size:28px;font-weight:600;line-height:1.3;letter-spacing:0;color:#344c43;margin-bottom:6px}
 @media(max-height:520px) and (orientation:landscape){.day #atmosphere{font-size:24px}.tools{flex-wrap:wrap;max-width:290px}header{gap:12px}}
+
+/* Atmosphere and date occupy separate top corners. */
+#game-header{display:grid;grid-template-columns:1fr auto;gap:10px 20px;align-items:start}
+#atmosphere{grid-column:1;grid-row:1;justify-self:start;background:#fff5dfed;border-radius:8px;padding:12px 18px;box-shadow:0 3px 0 #172e3522;font-size:28px;line-height:1.3;font-weight:600;white-space:nowrap;color:#344c43}
+#game-header .day{grid-column:2;grid-row:1;justify-self:end}
+#game-header .tools{grid-column:2;grid-row:2;justify-self:end;max-width:none}
+#modal-body h2,#modal-body p,#modal-body h3,#speech-text,#speaker{text-align:center}
+.pact-paper ol{text-align:center;list-style-position:inside;padding-left:0}
+.pact-paper{margin-inline:auto}
+@media(max-height:520px) and (orientation:landscape){#atmosphere{font-size:24px;padding:9px 12px}#game-header{gap:6px 12px}.tools{gap:3px}}
