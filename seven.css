@@ -9,6 +9,17 @@
 .notebook-clue{border-left:3px solid #bc9368;padding:4px 16px;margin:20px 0;background:#f1e8d1}
 dialog[open]{display:flex;flex-direction:column}#modal-body{min-height:0;overflow:auto}dialog details{margin:20px 0}dialog summary{cursor:pointer;min-height:44px;padding:10px 0}#modal-close{margin-top:16px;align-self:flex-start;flex-shrink:0}
 #quest{width:225px}#quest-tag{display:none}.day>span{letter-spacing:0;font-size:12px}
+#world-tips{position:absolute;inset:0;pointer-events:none}
+.world-tip{position:absolute;pointer-events:auto;width:44px;height:44px;min-height:44px;padding:0;background:transparent;border:0;overflow:visible;color:#355649;font-weight:bold;font-size:20px;isolation:isolate}
+.world-tip:before{content:'';position:absolute;inset:6px 4px;background:#fff4d9;border:1.5px solid #b78c5f;border-radius:12px 12px 12px 3px;box-shadow:0 2px 0 #354c4533;z-index:-1}
+.world-tip:hover{background:transparent}.world-tip:hover:before{background:#ffdf9b}.world-tip.seen:before{background:#e5eadb;border-color:#8eab91}.world-tip.seen{color:#60806b;font-size:15px}
+.world-tip.pact-tip{width:58px;font-size:14px}.world-tip.pact-tip:before{background:#f7d58c;border:2px solid #977446}
+.tip-caption{display:none;position:absolute;top:42px;left:50%;transform:translateX(-50%);white-space:nowrap;padding:6px 10px;border-radius:6px;background:#284c40;color:#fff6df;font-size:12px;font-weight:normal;pointer-events:none;z-index:3}
+.world-tip:hover .tip-caption,.world-tip:focus-visible .tip-caption{display:block}
+#guide-target{margin-top:10px;min-height:44px;padding:7px 12px;background:#365d4e;color:#fff7df;font-size:13px}
+.guide-steps{display:grid;grid-template-columns:1fr 1fr;gap:10px 20px}.guide-steps p{margin:5px 0;font-size:14px}.guide-steps b{display:block;margin-bottom:5px;color:#4b725b}.tip-example{display:inline-block;background:#efe1bf;min-width:23px;text-align:center;border-radius:5px;color:#3e604e}
+#scroll-help{display:none;flex-shrink:0;margin-top:8px;color:#647960}dialog.scrollable-content #scroll-help{display:block}dialog.scrollable-content #modal-close{margin-top:8px}
+@media(max-height:520px){.menu{padding-top:3vh;padding-bottom:2vh}.menu .subtitle{margin:5px 0}.menu h1{font-size:38px}.menu-actions{margin-top:6px;gap:3px}.menu-actions button{min-height:40px;padding:6px 12px}#guide-target{margin-top:6px}.guide-steps{gap:6px 16px}}
 @media(max-height:520px) and (orientation:landscape){
  .day>span{display:block;font-size:11px}.day strong{font-size:13px}.tools button{min-width:44px;min-height:44px;font-size:12px}
  #quest{top:70px;width:185px}#quest-detail{font-size:12px!important}#finish-day{bottom:87px;min-height:44px;padding:8px 14px}

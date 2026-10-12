@@ -142,6 +142,10 @@ function renderWorld(dt){clock+=dt;ctx.clearRect(0,0,vw,vh);ctx.fillStyle='#293f
  if(playing&&!state.dialogue){const t=nearestTarget();if(t){const x=t.hitX,y=t.hitY;ctx.strokeStyle='#fff7d7';ctx.lineWidth=2;ctx.beginPath();ctx.ellipse(x,y+12,21,8,0,0,Math.PI*2);ctx.stroke();}}
  ctx.restore();}
 function drawDayOneProps(g){
+ // A signed paper on the existing noticeboard is the first visible destination.
+ round(g,647,293,34,22,'#fff3cf',1,'#baa982');
+ for(let i=0;i<4;i++)line(g,652,298+i*4,676,298+i*4,'#8c947b',1);
+ round(g,660,290,8,5,'#b77860',1,null);
  // A visible paper on the real fridge, not an invisible target beside the sink.
  round(g,1063,399,19,27,'#fff4ce',1,'#b4a386');round(g,1068,398,9,4,'#bf7963',1,null);
  for(let i=0;i<4;i++)line(g,1067,407+i*4,1079,407+i*4,'#98a184',.8);

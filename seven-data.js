@@ -16,8 +16,9 @@ const PACT=[
 ];
 const CLUES={departure:{title:'许川的离职证明',text:'许川说上一份工作刚结束，证明还要留着办手续。',group:'许川的生活困境',detail:'目前只知道他离职了，最近过得怎么样，还没聊到。'}};
 // Only atmosphere is a relationship measure. Discovery flags never award points.
-const INITIAL=()=>({version:1,edition:'seven-day',day:1,phase:'explore',atmosphere:0,pact:'intact',signed:true,clues:[],visited:[],history:[],player:{x:624,y:368},npcs:null,elapsed:0});
+const INITIAL=()=>({version:1,edition:'seven-day',day:1,phase:'explore',introStep:'guide',atmosphere:0,pact:'intact',signed:true,clues:[],visited:[],history:[],player:{x:624,y:368},npcs:null,elapsed:0});
 const OBJECTS=[
+ {id:'board',name:'公约板',x:656,y:336,hitX:672,hitY:304},
  {id:'sofa',name:'背包',x:464,y:452,hitX:468,hitY:411},
  {id:'fridge',name:'冰箱上的公约',x:1040,y:432,hitX:1072,hitY:410},
  {id:'kitchen',name:'外卖盒',x:912,y:400,hitX:933,hitY:383},
@@ -28,6 +29,7 @@ const OBJECTS=[
  {id:'chen-door',name:'敲敲门',x:736,y:290,hitX:736,hitY:266},
  {id:'player-door',name:'自己的门',x:992,y:290,hitX:992,hitY:266}
 ];
+const OBJECT_TIPS={board:'看看七日公约',sofa:'包边露出一张纸',fridge:'看看冰箱上的公约',kitchen:'外卖盒还没收',balcony:'谁的纸箱没拆？',bathroom:'看看新摆好的杯子','lin-door':'敲门聊两句','su-door':'敲门聊两句','chen-door':'敲门聊两句','player-door':'看看自己的房间'};
 const OBSERVATIONS={
  kitchen:{title:'晚饭留下的盒子',text:'筷子还架在盒沿，里面剩了两颗花生。陈灿说等视频传完就来收。'},
  balcony:{title:'还没拆的纸箱',text:'箱子上写着“画具，别压”。上头却放了一袋薯片。'},
