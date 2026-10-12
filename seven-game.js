@@ -77,9 +77,8 @@ function paintTips(){
 document.addEventListener('click',e=>{if(mode==='play'&&state.dialogue&&!e.target.closest('button,input,select,dialog,canvas'))advance();});
 addEventListener('blur',stopMotion);
 document.addEventListener('visibilitychange',()=>{stopMotion();if(mode==='play')save();if(document.hidden){stopMusic();if(audio)audio.ctx.suspend();}else if(audio){audio.ctx.resume();startMusic();}});
-$('help').onclick=()=>showGuide();
 $('modal').addEventListener('close',()=>{if($('modal').open)return;const next=$('modal').dataset.next;$('modal').dataset.next='';if(next==='explore'){state.introStep='done';save();refreshHud();}else if(mode==='play'&&state.phase==='explore'&&!state.dialogue)finishInteraction();});
-$('new-game').onclick=newGame;$('replay').onclick=newGame;$('continue').onclick=resume;$('home').onclick=menu;$('end-home').onclick=menu;$('menu-settings').onclick=settingsModal;$('settings').onclick=settingsModal;$('journal').onclick=journal;$('roster').onclick=()=>showRoster();$('finish-day').onclick=requestEnd;$('modal-close').onclick=()=>$('modal').close();
+$('new-game').onclick=newGame;$('replay').onclick=newGame;$('continue').onclick=resume;$('end-home').onclick=menu;$('menu-settings').onclick=settingsModal;$('settings').onclick=settingsModal;$('roster').onclick=()=>showRoster();$('finish-day').onclick=requestEnd;$('modal-close').onclick=()=>$('modal').close();
 let chaseTime=0;
 function update(dt){if(mode!=='play'||$('modal').open||document.hidden||innerHeight>innerWidth&&innerWidth<900)return;if(state.phase==='dusk')state.duskTime+=dt;if(state.dialogue){const t=state.dialogue.lines[state.dialogue.index][1];typeElapsed+=dt*1000;if(settings.speed===0)printed=t.length;else while(typeElapsed>=settings.speed&&printed<t.length){printed++;typeElapsed-=settings.speed;}$('speech-text').textContent=t.slice(0,printed);return;}
  state.elapsed+=dt;
