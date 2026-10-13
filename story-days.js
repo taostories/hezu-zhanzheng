@@ -54,6 +54,16 @@ const DAY_PLACES={
  4:{lin:[240,176],su:[432,624],chen:[816,208],xu:[496,464]},
  5:{lin:[752,464],su:[624,368],chen:[624,528],xu:[496,464]}
 };
+// Only residents involved in an unresolved scene need to hold their places.
+const EVENT_STAYS={2:['su','chen'],3:['lin','chen'],5:['lin','chen','xu'],6:['lin','su','xu'],7:['lin','su','chen','xu']};
+const DAY_ROUTES={4:{
+ lin:[[7,5],[6,6],[5,5],[6,10],[8,14]],
+ su:[[13,19],[12,19],[16,18],[14,10],[14,5]],
+ chen:[[25,6],[24,5],[23,6],[23,11],[27,15]],
+ xu:[[15,14],[17,14],[18,16],[27,15],[15,15]]
+}};
+function residentWaitsForEvent(id){return needsEvent()&&(EVENT_STAYS[state.day]||[]).includes(id);}
+function residentRoute(id){return DAY_ROUTES[state.day]?.[id]||ROUTES[id];}
 function dayDefinition(day=state.day){return STORY_DAYS[day];}
 function needsEvent(s=state){return s.day===7?!s.flags.finaleRead:!!STORY_DAYS[s.day]?.choices&&!s.choices[s.day];}
 function availableChoices(s=state){

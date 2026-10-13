@@ -124,7 +124,14 @@ function update(dt){if(mode!=='play'||$('modal').open||document.hidden||innerHei
  state.elapsed+=dt;
  if(playerPath.length){state.player.path=playerPath;followPath(state.player,dt,210);playerPath=state.player.path;if(!playerPath.length)destination=null;}else state.player.step=0;
  if(chase){const target=targets().find(t=>t.id===chase);chaseTime+=dt;if(target&&Math.hypot(target.x-state.player.x,target.y-state.player.y)<64){const id=chase;stopMotion();interact(id);}else if(target&&chaseTime>.55){chaseTime=0;seek(target);}}
- for(const a of npcs){if(state.phase==='dusk'){const bed=BEDSPOTS[a.id];if(!a.bedRoute){a.path=findPath(a,bed);a.bedRoute=true;}followPath(a,dt,140);a.asleep=Math.hypot(a.x-bed.x,a.y-bed.y)<4;continue;}if(state.day>1){a.step=0;continue;}if(a.path.length)followPath(a,dt,68);else{a.step=0;a.wait-=dt;if(a.wait<=0){a.route=(a.route+1)%ROUTES[a.id].length;const [x,y]=ROUTES[a.id][a.route];a.path=findPath(a,{x:x*32+16,y:y*32+16});a.wait=3+a.route;}}}
+ // A click starts a conversation during this tick; don't let anyone walk away afterward.
+ if(state.dialogue||$('modal').open)return;
+ for(const a of npcs){
+  if(state.phase==='dusk'){const bed=BEDSPOTS[a.id];if(!a.bedRoute){a.path=findPath(a,bed);a.bedRoute=true;}followPath(a,dt,140);a.asleep=Math.hypot(a.x-bed.x,a.y-bed.y)<4;continue;}
+  if(residentWaitsForEvent(a.id)||chase===a.id){a.step=0;continue;}
+  if(a.path.length)followPath(a,dt,68);
+  else{a.step=0;a.wait-=dt;if(a.wait<=0){const route=residentRoute(a.id);a.route=(a.route+1)%route.length;const [x,y]=route[a.route];a.path=findPath(a,{x:x*32+16,y:y*32+16});a.wait=3+a.route;}}
+ }
  if(state.phase==='dusk'&&state.bedRequested&&Math.hypot(state.player.x-PLAYER_BED.x,state.player.y-PLAYER_BED.y)<4){state.phase='complete';state.bedRequested=false;stopMotion();save();showEnd();return;}
  saveElapsed+=dt;if(saveElapsed>2){saveElapsed=0;save();}
 }
