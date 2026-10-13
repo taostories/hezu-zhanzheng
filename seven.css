@@ -97,3 +97,35 @@ dialog #modal-body>button{display:block;margin:14px auto 0;min-width:160px}.end-
  #conversation .speech{padding:8px 16px}#speech-text{line-height:1.5}
  #ending h1{margin-top:6px}.end-actions button{min-height:44px}
 }
+/* CG edition: preserve the entire source illustration, including edge characters. */
+.menu{isolation:isolate;background:#b6a486;padding:0}
+.menu::before,#finale-art::before{content:'';position:absolute;inset:-30px;background:center/cover no-repeat url('assets/cg/reconcile.webp');filter:blur(20px) brightness(.7);z-index:-2}
+.menu-art{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;z-index:-1}
+.menu-copy{position:relative;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:max(12px,env(safe-area-inset-top)) 16px max(26px,env(safe-area-inset-bottom));background:linear-gradient(180deg,#fff1dcca,transparent 28%,transparent 68%,#2c3826a6);border:0;border-radius:0;box-shadow:none}
+.menu h1.splash-title{width:min(760px,76vw);margin:0;filter:drop-shadow(0 2px 8px #fff2d8)}
+.menu-actions{margin:0;gap:8px;width:270px;max-width:80vw}
+.menu-actions button{background:#fff3dfed;border-color:#977c59;box-shadow:0 3px 12px #322d282b}
+.menu-actions .primary{background:#355c4fed;color:#fff6df}
+#finale-art{position:absolute;inset:0;z-index:2;isolation:isolate;background:#4a5043;pointer-events:none}
+#finale-art::before{background-image:var(--cg-image)}
+#finale-image{display:block;width:100%;height:100%;object-fit:contain}
+.showing-finale #hud{visibility:hidden}
+#ending.cg-ending{padding:0 0 max(24px,env(safe-area-inset-bottom));background:#f7efdf}
+#ending.cg-ending article{max-width:1100px;margin:0 auto}
+#ending-image{display:block;width:100%;max-height:67dvh;object-fit:contain;background:#e3d5bb}
+#ending.cg-ending h1{margin:18px 20px 8px}
+#ending.cg-ending h3{margin:8px 20px 16px}
+#ending.cg-ending #end-agreement{margin:12px 24px;padding:12px 18px}
+#ending.cg-ending #end-clue{padding:0 24px}
+#ending.cg-ending .end-actions{padding:0 16px}
+@media(max-height:520px) and (orientation:landscape){
+ .menu-copy{padding:4px 12px max(12px,env(safe-area-inset-bottom))}
+ .menu h1.splash-title{width:min(470px,62vw)}
+ .splash-title img{max-height:110px}
+ .menu-actions{width:240px;gap:5px}
+ .menu-actions button{min-height:44px;padding:7px 12px}
+ #ending-image{max-height:76dvh}
+ #ending.cg-ending h1{margin-top:12px}
+}
+/* Keep the title above the faces, especially on shallow phone screens. */
+.menu h1.splash-title{width:min(680px,76vw,65dvh)}

@@ -61,3 +61,11 @@ function drawFinaleProps(g){
 function visibleResidents(){
  return npcs.filter(a=>!(a.id==='xu'&&state.day===7&&state.choices[6]==='A'&&(state.flags.finaleRead||(state.atmosphere>=2&&state.dialogue?.after==='finale:done'&&state.dialogue.index>=3))));
 }
+
+// Each mood variant has its own user-supplied CG. Day-end screens use no CG.
+function endingImage(id){return 'assets/cg/'+id+'.webp';}
+function syncFinaleArt(){
+ const active=mode==='play'&&state.day===7&&state.dialogue?.after==='finale:done';
+ $('finale-art').hidden=!active;document.body.classList.toggle('showing-finale',active);
+ if(active){const src=endingImage(endingFor().id);$('finale-image').src=src;$('finale-art').style.setProperty('--cg-image','url("'+src+'")');}
+}
