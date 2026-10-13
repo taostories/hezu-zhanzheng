@@ -63,8 +63,19 @@ function visibleResidents(){
 }
 
 // Each mood variant has its own user-supplied CG. Day-end screens use no CG.
-function endingImage(id){return 'assets/cg/'+id+'.webp';}
+function endingImage(id){return 'assets/cg/optimized/'+id+'-1280.webp';}
+// Load only the chosen ending during D6, before the player goes to bed.
+// Keep the decoded image alive so dialogue and ending page share it.
+const endingArtCache=new Map();
+function warmEndingArt(){
+ if(state.day<6||!state.choices[6])return;
+ const src=endingImage(endingFor().id);if(endingArtCache.has(src))return;
+ const img=new Image();img.decoding='async';img.fetchPriority=state.day===7?'high':'low';
+ endingArtCache.set(src,img);img.onerror=()=>endingArtCache.delete(src);img.src=src;
+ if(img.decode)img.decode().catch(()=>{});
+}
 function syncFinaleArt(){
+ if(mode==='play'||mode==='end')warmEndingArt();
  const active=mode==='play'&&state.day===7&&state.dialogue?.after==='finale:done';
  $('finale-art').hidden=!active;document.body.classList.toggle('showing-finale',active);
  if(active){const src=endingImage(endingFor().id);$('finale-image').src=src;$('finale-art').style.setProperty('--cg-image','url("'+src+'")');}
