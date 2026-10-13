@@ -157,29 +157,20 @@ dialog #modal-body>button{display:block;margin:14px auto 0;min-width:160px}.end-
  .menu-actions{width:190px;padding:6px;gap:4px}
  .menu-actions button{min-height:44px;font-size:16px;padding:6px}
 }
-/* Full-bleed diagonal panels: narrow ink seams, no frame padding or empty gutters. */
-.comic-panels{inset:0;display:block;background:#263c32}
-.comic-panel{position:absolute;margin:0;border:0;box-shadow:none;transform:none;grid-area:auto;background:#b8a17d}
-.comic-panel img{object-fit:cover;background:none}
-.panel-leave-calm{left:0;top:0;width:40%;height:53%;clip-path:polygon(0 0,99.4% 0,87.6% 93.5%,0 99.4%)}
-.panel-stay-calm{left:0;top:50%;width:35.2%;height:50%;clip-path:polygon(0 6%,99.4% 0,87.5% 100%,0 100%)}
-.panel-reconcile{left:31%;top:0;width:33%;height:100%;clip-path:polygon(28% 0,99.4% 0,78.5% 100%,0 100%)}
+/* Full source illustrations mapped into adjoining slanted panels, without cropping. */
+.comic-panels{inset:0;display:block;background:#34473c}
+.comic-panel{position:absolute;inset:0;width:100%;height:100%;margin:0;border:0;box-shadow:none;transform:none;grid-area:auto;background:none;clip-path:none}
+.comic-panel img{width:100%;height:100%;object-fit:fill;background:none}
 .panel-reconcile::before{display:none}
-.panel-reconcile img{object-fit:cover;object-position:53% 50%}
-.panel-leave-tense{left:60.64%;top:0;width:39.36%;height:48%;clip-path:polygon(8.6% 0,100% 0,100% 91.1%,0 99.4%)}
-.panel-stay-tense{left:57%;top:44%;width:43%;height:56%;clip-path:polygon(8.6% 7.2%,100% 0,100% 100%,0 100%)}
-.panel-leave-calm img{object-position:56% 46%}
-.panel-leave-tense img{object-position:61% 48%}
-.panel-stay-calm img{object-position:45% 47%}
-.panel-stay-tense img{object-position:48% 55%}
-.menu-copy{background:linear-gradient(180deg,#fff0d74d,transparent 26%,transparent 78%,#203b3040)}
-.menu h1.splash-title{width:min(680px,57vw,90dvh)}
-.menu-actions{border:0;background:none;box-shadow:none;transform:none;padding:0;width:250px;gap:7px}
+.panel-reconcile img{object-fit:fill;background:none}
+.menu-copy{background:none}
+.menu h1.splash-title{position:absolute;top:46%;left:50%;transform:translate(-50%,-50%);width:min(680px,53vw,85dvh)}
+.menu-actions{position:absolute;bottom:max(24px,env(safe-area-inset-bottom));left:50%;translate:-50% 0;border:0;background:none;box-shadow:none;transform:none;padding:0;width:250px;gap:7px}
 .menu-actions button{border:2px solid #345244;box-shadow:3px 3px 0 #223e3266;background:#fff0d9f2;transform:skew(-6deg);border-radius:2px}
 .menu-actions .primary{background:#355c4ff2}
 @media(max-height:520px) and (orientation:landscape){
  .comic-panels{inset:0;gap:0}
  .comic-panel{border:0}
- .menu-actions{width:180px;padding:0;gap:5px}
- .menu h1.splash-title{width:min(400px,54vw,95dvh)}
+ .menu-actions{width:180px;padding:0;gap:5px;bottom:max(10px,env(safe-area-inset-bottom))}
+ .menu h1.splash-title{top:34%;width:min(360px,48vw,70dvh)}
 }
