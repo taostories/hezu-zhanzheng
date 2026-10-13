@@ -1,6 +1,6 @@
 # 合租战争
 
-[在线试玩](https://taostories.github.io/hezu-zhanzheng/?v=comic-menu-20261013)
+[在线试玩](https://taostories.github.io/hezu-zhanzheng/?v=comic-diagonal-20261013)
 
 2026-10-13：主菜单采用用户提供的五张CG漫画拼图与新标题，五种结局版本已接入对应CG，结局对话和结局页均展示对应图片，旧存档兼容。素材记录见 [assets/cg/README.md](assets/cg/README.md)。
 
