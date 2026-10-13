@@ -6,26 +6,26 @@ const STORY_DAYS={
    lines:[['su','已经十一点二十了。他那段视频，一句重录了八遍。'],['chen','最后一遍，真的。我没注意时间。'],['su','我明早有课。你能跟他说一下吗？']],end:'外放关了，厨房那瓶饮料还开着。',
    choices:{
     A:{label:'陈灿，声音收一下。还有，写了名字的东西先问再拿。',reply:[['chen','好，我戴耳机。饮料的事明早说吧。'],['su','那我先回去了。']]},
-    B:{label:'公约写着十一点后不能吵。今晚先别拍了。',reply:[['chen','知道了，停了。'],['lin','饮料是我的，明早也得说清楚。'],['chen','……行。']]},
+    B:{label:'公约写着十一点后不能吵。现在就关掉，今晚别拍了。',floor:2,reply:[['chen','知道了，停了。'],['lin','饮料是我的，明早也得说清楚。'],['chen','……行。']]},
     C:{label:'苏白，今晚先让他录完吧。我去催他。',shift:1,reply:[['su','我已经等了挺久了。'],['chen','我关外放，剩下的戴耳机录。']]},
     D:{label:'林砚，你能跟我一起去说一下吗？',reply:[['lin','行，不过你也一起说。'],['chen','不用两个人来，我听见了。现在关。']]}
    }},
  3:{title:'公开争执',time:'早上',intro:'厨房传来争吵声。那瓶写着名字的饮料，被摆到了两个人中间。',eventPeople:['lin','chen'],eventText:'饮料的事还没说完',
    lines:[['chen','是我喝的。我以为名字是买东西时做的标记。'],['lin','那是我留给自己的。你喝之前问一句不行吗？'],['chen','我买一瓶还你。别搞得跟审我一样。'],['lin','你说呢？']],end:'瓶子收走了，厨房没人再说话。',
    choices:{
-    A:{label:'陈灿，给林砚道个歉，补一瓶。公约还是得遵守。',shift:-1,reply:[['chen','对不起，明天补给你。'],['lin','我要的就是这句话。'],['chen','嗯，下次先问你。']]},
+    A:{label:'陈灿，这次必须道歉赔偿。写好的规矩不能当没看见。',shift:1,reply:[['chen','我说了会赔。非得这么训我吗？'],['lin','你先别顶嘴，道个歉就过去了。'],['chen','……对不起，明天买。']]},
     B:{label:'就是一瓶饮料，先别吵了。陈灿也不是故意的。',shift:1,reply:[['lin','你们觉得小，可那是我的东西。'],['chen','我还是会赔的。']]},
     C:{label:'陈灿补一瓶，以后先问。今天这事就说到这儿，好吗？',shift:-1,reply:[['chen','行，口味发我。'],['lin','好，补了就行。下次先问我。']]},
     D:{label:'要不另放一层，愿意共享的饮料放那儿？各自的照旧。',shift:-1,flag:'sharedDrinks',reply:[['lin','我的先不放，行吧？'],['chen','行。这次先赔你一瓶，以后我的放共享那层。']]},
-    E:{label:'瓶上写着林砚的名字。陈灿，这次确实是你没问。',requires:'drink',shift:-1,reply:[['chen','看见了。我赔。'],['lin','嗯，赔一瓶就行。以后先问我。']]}
+    E:{label:'瓶上写着林砚的名字。陈灿，这次确实是你没问。',requires:'drink',reply:[['chen','看见了。我赔。'],['lin','嗯，赔一瓶就行。以后先问我。']]}
    }},
  4:{title:'休战暗流日',time:'午后',intro:'今天没人吵架。各忙各的，客厅倒显得空了。',end:'今天没有争吵。有些话，只在两个人之间说了。'},
  5:{title:'公约崩塌',time:'深夜',intro:'陈灿带朋友回来了，相机还开着。林砚拦住镜头，许川扯下了冰箱上的公约。',eventPeople:['chen','lin'],eventText:'客厅吵起来了',
    lines:[['lin','谁说可以带人回来拍的？先把镜头关了。'],['chen','就补两个镜头，没拍你。'],['xu','别吵了！这张纸贴在这儿，大家还不是天天吵。'],['player','许川，先把纸放下。']],end:'人散了。餐桌上的纸，再也拼不回原样。',
    choices:{
     A:{label:'先停拍，朋友今晚先回去。咱们几个留下说。',flag:'guestLeft',reply:[['chen','行，我送他下楼。'],['lin','以后带人来，先说一声。'],['xu','纸……我不是想撕成这样的。']]},
-    B:{label:'今晚先留一晚，别再拍了。天亮就走，行吗？',shift:1,flag:'guestStays',reply:[['lin','我不赞成。你已经决定了，还问什么？'],['chen','我让他明早就走。今晚不拍了。'],['su','至少现在关掉吧。']]},
-    C:{label:'许川，你扯公约，是不是根本没打算到期搬走？',requiresFlag:'suHint',shift:1,flag:'guestLeft',reply:[['xu','我是还没找到地方，不是想赖着。'],['lin','那为什么不早点说？'],['chen','我先送人走，你们别再吵了。']]},
+    B:{label:'今晚先留一晚，别再拍了。天亮就走，行吗？',shift:1,floor:2,flag:'guestStays',reply:[['lin','我不赞成。你已经决定了，还问什么？'],['chen','我让他明早就走。今晚不拍了。'],['su','至少现在关掉吧。']]},
+    C:{label:'许川，你扯公约，是不是根本没打算到期搬走？',requiresFlag:'suHint',atmosphere:3,flag:'guestLeft',reply:[['xu','我是还没找到地方，不是想赖着。'],['lin','那为什么不早点说？'],['chen','我先送人走，你们别再吵了。']]},
     D:{label:'苏白，能陪我劝两句吗？我先送客。',shift:-1,flag:'guestLeft',reply:[['su','可以。先关相机吧。'],['chen','关了，我陪你送他。'],['xu','我等你们回来，把借住的事也说清楚。']]}
    }}
 };
@@ -64,32 +64,48 @@ const DAY_ROUTES={4:{
 }};
 function residentWaitsForEvent(id){return needsEvent()&&(EVENT_STAYS[state.day]||[]).includes(id);}
 function residentRoute(id){return DAY_ROUTES[state.day]?.[id]||ROUTES[id];}
-function dayDefinition(day=state.day){return STORY_DAYS[day];}
+function dayDefinition(day=state.day,s=state){
+ const d=STORY_DAYS[day];if(day!==5||s.pact==='torn')return d;
+ return {...d,title:'未经商量的访客',intro:'陈灿带朋友回来补拍镜头，没提前跟大家说。林砚让他先把相机关掉。',eventText:'来客和拍摄的事得说一下',
+  lines:[['lin','陈灿，先关一下。带人回来拍，得提前跟大家说。'],['chen','就补两个镜头。我以为很快就完了。'],['xu','那先停会儿，问过大家再拍吧。'],['player','咱们把这事说一下。']],
+  end:s.flags.guestStays?'相机关了，客人留了下来。大家没再说话。':'相机关了，客人也走了。公约还贴在冰箱上。',
+  choices:{...d.choices,
+   A:{...d.choices.A,reply:[['chen','行，我送他下楼。'],['lin','以后带人来，先说一声。'],['xu','我帮着把茶几挪回去。']]},
+   C:{...d.choices.C,label:'许川，趁大家都在，你是不是根本没打算到期搬走？'}
+  }};
+}
+function clueInfo(id,s=state){
+ if(id==='scrap'&&s.pact!=='torn')return {title:'公约上的访客条款',text:'林砚抄在便签上的一条：'+PACT[3],group:'公约条款'};
+ return CLUES[id];
+}
 function needsEvent(s=state){return s.day===7?!s.flags.finaleRead:!!STORY_DAYS[s.day]?.choices&&!s.choices[s.day];}
 function availableChoices(s=state){
- const choices=STORY_DAYS[s.day]?.choices||{};
+ const choices=dayDefinition(s.day,s)?.choices||{};
  const keys=s.day===3?[s.clues.includes('drink')?'E':'A','B','C','D']:Object.keys(choices);
  return keys.map(id=>[id,choices[id]]).filter(([,b])=>(!b.requires||s.clues.includes(b.requires))&&(!b.requiresFlag||s.flags[b.requiresFlag]));
 }
 function evaluateChoice(atmosphere,pact,flags,day,id){
  const b=STORY_DAYS[day].choices[id];let a=b.atmosphere??atmosphere;
  if(b.shift)a+=b.shift;if(b.cap!==undefined)a=Math.min(a,b.cap);if(b.floor!==undefined)a=Math.max(a,b.floor);
- return {atmosphere:Math.max(0,Math.min(3,a)),pact:day===5?'torn':b.pact||pact,flags:{...flags,...(b.flag?{[b.flag]:true}:{})}};
+ a=Math.max(0,Math.min(3,a));
+ return {atmosphere:a,pact:day===5&&a>=2?'torn':b.pact||pact,flags:{...flags,...(b.flag?{[b.flag]:true}:{})}};
 }
 function clueGroups(s=state){return [s.clues.includes('departure')&&s.clues.includes('bill'),'drink','medical','hairtie','scrap'].filter((c,i)=>i===0?c:s.clues.includes(c)).length;}
-function dayObjects(){const objects=OBJECTS.map(o=>({...o}));if(state.day>=5)objects.push({id:'dining',name:'公约残片',x:880,y:528,hitX:880,hitY:565});return objects;}
+function dayObjects(){const objects=OBJECTS.map(o=>({...o}));if(state.day>=5)objects.push({id:'dining',name:state.pact==='torn'?'公约残片':'公约条款',x:880,y:528,hitX:880,hitY:565});return objects;}
 function dayNPCs(saved){const list=createNPCs(saved);if(!saved&&DAY_PLACES[state.day])for(const a of list){[a.x,a.y]=DAY_PLACES[state.day][a.id];a.dir='down';}return list;}
 function eventPerson(id){return state.phase==='explore'&&needsEvent()&&dayDefinition().eventPeople.includes(id);}
 function tipText(t){
  if(eventPerson(t.id))return dayDefinition().eventText;
  if(PEOPLE[t.id])return '和'+t.name+'聊聊';
- if(t.id==='board'||t.id==='fridge')return state.day>=5?'看看胶带留下的痕迹':'看看七日公约';
+ if(t.id==='board'||t.id==='fridge')return state.pact==='torn'?'看看胶带留下的痕迹':'看看七日公约';
+ if(t.id==='dining'&&state.pact!=='torn')return '看看访客条款';
  return DAY_OBSERVATIONS[state.day]?.[t.id]?.[0]||OBJECT_TIPS[t.id];
 }
-function grantClue(id){if(state.clues.includes(id))return;state.clues.push(id);notify('记下了：'+CLUES[id].title);}
+function grantClue(id){if(state.clues.includes(id))return;state.clues.push(id);notify('记下了：'+clueInfo(id).title);}
 function inspectDayObject(t){
  if(state.day===1)return false;
  if(state.day===6&&t.id==='sofa'){openModal('<h2>沙发边的行李</h2><p>'+(state.atmosphere<2?'箱子装了一半，换洗的衣服还留在外面。':'箱子敞着，衣服和日用品还没收进去。')+'</p>');return true;}
+ if(state.day>=5&&t.id==='dining'&&state.pact!=='torn'){const clue=clueInfo('scrap');if(state.day===5)grantClue('scrap');openModal('<h2>'+clue.title+'</h2><p>'+clue.text+'</p>');save();return true;}
  const o=DAY_OBSERVATIONS[state.day]?.[t.id];
  if(o){if(o[2])grantClue(o[2]);openModal('<h2>'+o[0]+'</h2><p>'+o[1]+'</p>');save();return true;}
  if(t.id==='player-door'){openModal('<h2>自己的房间</h2><p>窗边留着一点光，床单还平平整整。</p>');return true;}return false;
@@ -105,6 +121,7 @@ function chatDay(id){
   }
   if(id==='chen'&&state.clues.includes('hairtie')){startDialogue([['player','洗手台那个发圈，你知道是谁的吗？'],['chen','朋友的。前两天上来拿过东西，我忘了说。'],['player','下次提前说一声。']],'hint:visitor');return true;}
  }
+ if(state.day===5&&id==='xu'&&state.pact!=='torn'){startDialogue([['xu','我把东西往边上收收。下次要拍，还是提前问一句吧。']]);return true;}
  startDialogue([[id,state.day===2&&state.choices[2]&&id==='chen'?'外放关了。我把素材收一下就回屋。':DAY_CHAT[state.day][id]]]);return true;
 }
 function startEvent(){
@@ -117,8 +134,11 @@ function paintChoices(){
 }
 function commitChoice(id){
  if(state.eventStage!=='choice'||!needsEvent()||choiceLock(id)||!availableChoices().some(([key])=>key===id))return;
- const b=dayDefinition().choices[id];state.history.push(['player',b.label]);Object.assign(state,evaluateChoice(state.atmosphere,state.pact,state.flags,state.day,id));
- state.choices[state.day]=id;state.eventStage='response';$('choices').hidden=true;startDialogue(b.reply,'event:done');refreshHud();
+ const b=dayDefinition().choices[id],before=state.atmosphere,paperBefore=state.pact;state.history.push(['player',b.label]);Object.assign(state,evaluateChoice(state.atmosphere,state.pact,state.flags,state.day,id));
+ state.choices[state.day]=id;state.eventStage='response';$('choices').hidden=true;
+ const tearing=paperBefore!=='torn'&&state.pact==='torn'?[['xu','别说了！这张纸贴着有什么用？'],['player','许川，别撕！先把纸放下。']]:[];
+ startDialogue(tearing.length?[b.reply[0],...tearing,...b.reply.slice(1)]:b.reply,'event:done');refreshHud();
+ if(before!==state.atmosphere)notify('合租氛围：'+ATMOSPHERES[before]+' → '+ATMOSPHERES[state.atmosphere]);
 }
 function advanceStory(after){
  if(after==='finale:done'){finishFinale();return true;}
@@ -133,7 +153,7 @@ function advanceStory(after){
 function nextDay(){
  if(state.phase!=='complete'||state.day>=7)return;
  const carry={day:state.day+1,atmosphere:state.atmosphere,pact:state.pact,clues:[...state.clues],flags:{...state.flags},choices:{...state.choices},history:[...state.history],introStep:'done'};
- state={...INITIAL(),...carry};if(state.day===5)state.pact='torn';npcs=dayNPCs();setMode('play');save();openModal('<h2>第 '+state.day+' 天 · '+dayDefinition().title+'</h2><p>'+dayDefinition().intro+'</p>','开始');
+ state={...INITIAL(),...carry};if(state.day===5&&state.atmosphere>=2)state.pact='torn';npcs=dayNPCs();setMode('play');save();openModal('<h2>第 '+state.day+' 天 · '+dayDefinition().title+'</h2><p>'+dayDefinition().intro+'</p>','开始');
 }
 function drawStoryProps(g){
  if(state.day<2)return;drawFinaleProps(g);
@@ -147,11 +167,12 @@ function drawStoryProps(g){
   round(g,588,447,28,18,'#405751',3);ellipse(g,602,456,5,5,'#96b6b1');line(g,602,465,590,496,'#5d6252',2);line(g,602,465,614,496,'#5d6252',2);
   ellipse(g,611,452,2,2,'#d07960');
  }
- if(state.day>=5){
+ if(state.pact==='torn'){
   for(let i=0;i<5;i++){g.save();g.translate(855+i*11,558+(i%2)*8);g.rotate((i-2)*.18);round(g,0,0,20,9,'#f8ecd0',1,'#b9aa8d');line(g,4,4,16,4,'#9d947f',1);g.restore();}
-  if(state.day===5&&(needsEvent()||state.flags.guestStays)){
-   // Visitor silhouette: separate muted outfit, short side-swept hair, no resident identity.
-   ellipse(g,710,526,13,5,'#293b3828');round(g,701,482,21,34,'#9294a0',7,'#596475');line(g,705,514,704,525,'#576574',7);line(g,718,514,719,525,'#576574',7);ellipse(g,711,474,12,14,'#d4b69d');ellipse(g,711,465,13,10,'#5b5a54');
-  }
  }
+ if(state.day>=5&&state.pact!=='torn'){
+  round(g,868,557,31,20,'#fff0bd',2,'#b9aa8d');
+  for(let i=0;i<3;i++)line(g,872,562+i*4,894,562+i*4,'#9d947f',1);
+ }
+ if(state.day===5&&(needsEvent()||state.flags.guestStays))drawPerson(g,{id:'visitor',x:711,y:526,dir:'left'});
 }

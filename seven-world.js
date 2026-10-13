@@ -69,7 +69,7 @@ function buildArt(){const g=staticArt.getContext('2d');g.fillStyle='#d3b38c';g.f
  for(let i=0;i<4500;i++){const x=(i*131.731)%WW,y=(i*79.617)%WH;g.fillStyle=i%2?'#564c3510':'#fff4d820';g.fillRect(x,y,1.1,1.1);}
 }
 function drawPerson(g,a,scale=1){
- const id=a.id,p=PEOPLE[id],back=a.dir==='up',side=a.dir==='left'?-1:a.dir==='right'?1:0;
+ const id=a.id,p=PEOPLE[id]||{hair:'#514954'},back=a.dir==='up',side=a.dir==='left'?-1:a.dir==='right'?1:0;
  const moving=(a.step||0)>0,walk=moving?Math.sin(a.step)*2.5:0,bob=moving?Math.sin(a.step*2)*.55:0;
  g.save();g.translate(a.x,a.y);g.scale(scale,scale);
  ellipse(g,0,1,12,4,'#273d3326');
@@ -82,7 +82,7 @@ function drawPerson(g,a,scale=1){
  }
  g.translate(0,bob);
  if(id==='lin'){shape(()=>{g.moveTo(6,-43);g.bezierCurveTo(23,-43,17,-20,12,-22);g.bezierCurveTo(8,-28,7,-32,6,-43);},shade(-46,-23,'#455154','#283b40'));line(g,12,-39,14,-29,'#65706e',.7);}
- const clothing={player:['#efe4cf','#b8b6a0'],lin:['#65767a','#3e5159'],su:['#e0e2dc','#a2b4b4'],chen:['#e9bb92','#c48c71'],xu:['#aec0ab','#768e7f']}[id];
+ const clothing={player:['#efe4cf','#b8b6a0'],lin:['#65767a','#3e5159'],su:['#e0e2dc','#a2b4b4'],chen:['#e9bb92','#c48c71'],xu:['#aec0ab','#768e7f'],visitor:['#c3b3cb','#8b829e']}[id];
  const cloth=shade(-32,-9,...clothing);
  // Curved shoulders and sleeves give each outfit a softer silhouette.
  const shoulder=id==='su'?14:id==='lin'?13:11;
@@ -103,11 +103,15 @@ function drawPerson(g,a,scale=1){
  }else if(id==='xu'){
   shape(()=>{g.moveTo(-7,-32);g.lineTo(0,-28);g.lineTo(7,-32);g.lineTo(4,-23);g.lineTo(0,-27);g.lineTo(-4,-23);g.closePath();},'#d2d4ba','#8d9f8d',.8);
   line(g,0,-26,0,-12,'#657f7159',.8);for(let i=0;i<3;i++)ellipse(g,1,-22+i*4,.65,.65,'#677c6b');
+ }else if(id==='visitor'){
+  shape(()=>{g.moveTo(-7,-33);g.lineTo(0,-29);g.lineTo(7,-33);g.lineTo(5,-24);g.lineTo(0,-27);g.lineTo(-5,-24);g.closePath();},'#eee5d5','#8f8590',.7);
+  line(g,0,-26,0,-11,'#796e8777',.8);for(let i=0;i<3;i++)ellipse(g,1,-22+i*4,.65,.65,'#d8cfc2');
  }else if(id==='chen'){line(g,-8,-24,8,-24,'#f5d3a3',1);line(g,-8,-16,8,-16,'#f5d3a380',1);}
  const hairGrad=shade(-57,-32,id==='player'?'#817465':id==='lin'?'#526064':id==='su'?'#e1e5dc':id==='chen'?'#cb9b7c':'#89715c',id==='player'?'#544f49':p.hair);
  // Distinct hair outlines instead of rectangular caps.
  const outline=()=>{
   if(id==='xu'){g.moveTo(-12,-36);g.bezierCurveTo(-18,-41,-17,-49,-12,-50);g.bezierCurveTo(-16,-55,-8,-59,-4,-56);g.bezierCurveTo(1,-62,7,-58,9,-54);g.bezierCurveTo(16,-56,19,-47,14,-44);g.quadraticCurveTo(17,-37,11,-32);g.lineTo(-9,-32);}
+  else if(id==='visitor'){g.moveTo(-13,-34);g.bezierCurveTo(-17,-46,-11,-58,0,-57);g.bezierCurveTo(10,-60,18,-47,14,-35);g.lineTo(9,-30);g.lineTo(10,-42);g.quadraticCurveTo(0,-37,-9,-40);g.lineTo(-9,-30);}
   else if(id==='su'){g.moveTo(-14,-35);g.lineTo(-15,-47);g.quadraticCurveTo(-9,-58,3,-56);g.quadraticCurveTo(14,-57,15,-45);g.lineTo(13,-32);g.lineTo(8,-35);g.lineTo(-9,-33);}
   else if(id==='chen'){g.moveTo(-13,-35);g.quadraticCurveTo(-18,-47,-10,-53);g.lineTo(-13,-57);g.quadraticCurveTo(-2,-55,3,-57);g.bezierCurveTo(14,-57,17,-48,13,-35);g.lineTo(6,-32);g.lineTo(-8,-32);}
   else{g.moveTo(-13,-35);g.bezierCurveTo(-18,-43,-13,-56,-3,-56);g.bezierCurveTo(9,-60,17,-49,14,-38);g.quadraticCurveTo(11,-29,6,-32);g.lineTo(-9,-32);}
@@ -128,6 +132,7 @@ function drawPerson(g,a,scale=1){
  for(let i=0;i<4;i++){const x=-9+i*5;g.beginPath();g.moveTo(x,-52);g.quadraticCurveTo(x-3,-48,x-2,-44);g.strokeStyle=id==='su'?'#9faeac70':'#eadcc130';g.lineWidth=.7;g.stroke();}
  if(id==='chen'){g.beginPath();g.moveTo(5,-54);g.bezierCurveTo(9,-50,9,-46,7,-43);g.strokeStyle='#efbba4';g.lineWidth=3;g.stroke();line(g,-8,-28,8,-13,'#6b695a',1.6);round(g,3,-17,10,8,'#536e6a',2,'#415953');ellipse(g,8,-13,2.7,2.7,'#a9c0b7');ellipse(g,8,-13,1.4,1.4,'#526f75');}
  if(id==='su'){round(g,-15,-42,4,11,'#687f85',2,'#4e686d');round(g,11,-42,4,11,'#687f85',2,'#4e686d');line(g,-13,-47,-11,-51,'#9aabaa',1.6);line(g,-12,-32,-10,-26,'#849c96',.8);}
+ if(id==='visitor'){line(g,9,-30,-10,-12,'#555a65',2);round(g,-17,-16,12,13,'#616d80',3,'#475565');line(g,-15,-11,-7,-11,'#adb4bc',.8);ellipse(g,-11,-9,1,1,'#c8b690');}
  if(id==='xu'){line(g,-8,-30,10,-12,'#e2d0ac',2.5);shape(()=>{g.moveTo(6,-15);g.quadraticCurveTo(12,-17,16,-14);g.lineTo(15,-5);g.quadraticCurveTo(10,-3,6,-6);g.closePath();},shade(-15,-4,'#e7d9ba','#bead8a'),'#928a70',.8);line(g,9,-11,13,-11,'#b5a383',.8);}
  g.restore();
 }
@@ -143,7 +148,7 @@ function renderWorld(dt){clock+=dt;ctx.clearRect(0,0,vw,vh);ctx.fillStyle='#293f
  drawNight(ctx);ctx.restore();}
 function drawDayOneProps(g){
  // A signed paper on the existing noticeboard is the first visible destination.
- if(state.day<5){round(g,647,293,34,22,'#fff3cf',1,'#baa982');
+ if(state.pact!=='torn'){round(g,647,293,34,22,'#fff3cf',1,'#baa982');
  for(let i=0;i<4;i++)line(g,652,298+i*4,676,298+i*4,'#8c947b',1);
  round(g,660,290,8,5,'#b77860',1,null);
  // A visible paper on the real fridge, not an invisible target beside the sink.
