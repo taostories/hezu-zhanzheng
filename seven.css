@@ -129,3 +129,31 @@ dialog #modal-body>button{display:block;margin:14px auto 0;min-width:160px}.end-
 }
 /* Keep the title above the faces, especially on shallow phone screens. */
 .menu h1.splash-title{width:min(680px,76vw,65dvh)}
+/* Five-panel comic cover, with a larger central reunion panel. */
+.menu{background:#efe2c8}
+.menu::before{display:none}
+.comic-panels{position:absolute;inset:12px;display:grid;grid-template-columns:1fr 1.2fr 1fr;grid-template-rows:1fr 1fr;gap:10px;pointer-events:none}
+.comic-panel{position:relative;min-width:0;min-height:0;overflow:hidden;border:3px solid #34473c;background:#decbaa;box-shadow:3px 4px 0 #34473c40}
+.comic-panel img{width:100%;height:100%;display:block;object-fit:cover}
+.panel-leave-calm{grid-area:1/1;transform:rotate(-1deg)}
+.panel-leave-tense{grid-area:1/3;transform:rotate(1deg)}
+.panel-stay-calm{grid-area:2/1;transform:rotate(.8deg)}
+.panel-stay-tense{grid-area:2/3;transform:rotate(-.8deg)}
+.panel-reconcile{grid-area:1/2/3/3}
+.panel-reconcile img{object-fit:contain;background:#ead5af}
+.panel-reconcile::before{content:'';position:absolute;inset:0;background:url('assets/cg/reconcile.webp') center/cover;filter:blur(18px);opacity:.45}
+.panel-reconcile img{position:relative;background:transparent}
+.menu-copy{padding:20px 12px 24px;background:linear-gradient(180deg,#fff0d730,transparent 30%,transparent 75%,#29453725)}
+.menu h1.splash-title{width:min(740px,60vw,86dvh);filter:drop-shadow(0 4px 0 #fff1d8) drop-shadow(0 8px 12px #253c3855);margin:0}
+.splash-title img{max-height:none;filter:none}
+.menu-actions{width:250px;padding:12px;gap:8px;border:2px solid #3a5548;background:#fff0d8ed;box-shadow:4px 5px 0 #31483966;transform:rotate(-1deg)}
+.menu-actions button{border-radius:3px;box-shadow:none;letter-spacing:2px}
+@media(max-height:520px) and (orientation:landscape){
+ .comic-panels{inset:7px;gap:7px;grid-template-columns:1fr 1.2fr 1fr}
+ .comic-panel{border-width:2px}
+ .menu-copy{padding:8px 10px 12px}
+ .menu h1.splash-title{width:min(420px,55vw,95dvh)}
+ .splash-title img{max-height:none}
+ .menu-actions{width:190px;padding:6px;gap:4px}
+ .menu-actions button{min-height:44px;font-size:16px;padding:6px}
+}

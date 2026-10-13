@@ -1,8 +1,8 @@
 # 合租战争
 
-[在线试玩](https://taostories.github.io/hezu-zhanzheng/?v=cg-edition-20261013)
+[在线试玩](https://taostories.github.io/hezu-zhanzheng/?v=comic-menu-20261013)
 
-2026-10-13：主菜单及五种结局版本已接入用户提供的CG，结局对话和结局页均展示对应图片，旧存档兼容。素材记录见 [assets/cg/README.md](assets/cg/README.md)。
+2026-10-13：主菜单采用用户提供的五张CG漫画拼图与新标题，五种结局版本已接入对应CG，结局对话和结局页均展示对应图片，旧存档兼容。素材记录见 [assets/cg/README.md](assets/cg/README.md)。
 
 2026-10-12：七日方案已接通 **第一至第七天与三个结局**。每次最多四个选项，唯一关系指标为「合租氛围」。第六天决定许川按期搬走、延后或共同协商，第七天进入对应结局。
 
